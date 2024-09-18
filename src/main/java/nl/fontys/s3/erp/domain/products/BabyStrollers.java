@@ -1,17 +1,17 @@
 package nl.fontys.s3.erp.domain.products;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
-@Data
+@Getter @Setter
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class BabyStrollers extends HardwareProduct{
-    private long maxWeightCapacity;
-    private long ageLimit;
+public class BabyStrollers extends Product {
+    private double maxWeightCapacity;
+    private int ageLimit;
+    private TypeOfStroller typeOfStroller;
+    private boolean foldable;
+
 }

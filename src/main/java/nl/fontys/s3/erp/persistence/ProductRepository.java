@@ -7,5 +7,5 @@ public interface ProductRepository{
 
     ProductEntity save(ProductEntity product);
 
-    int count();
+
 }
