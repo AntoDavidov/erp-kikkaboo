@@ -1,15 +1,30 @@
 package nl.fontys.s3.erp.persistence.entity;
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
+import nl.fontys.s3.erp.domain.products.Country;
 
-@Data
+import java.util.List;
+
+
+//@Entity
+//@Table("manufacturers")
+
+@Getter
+@Setter
+@AllArgsConstructor
 @SuperBuilder
 public class ManufacturerEntity {
     private Long id;
 
-    private String country;
+    private String companyName;
+
+    private Country country;
 
     private String city;
+
+    private List<ProductEntity> products;
+
+//    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
+//    private List<ProductEntity> products = new ArrayList<>();
 }

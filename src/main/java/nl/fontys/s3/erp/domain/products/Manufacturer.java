@@ -1,17 +1,19 @@
 package nl.fontys.s3.erp.domain.products;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data
+import java.util.List;
+
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class Manufacturer {
 
-    private long id;
-    private String country;
+    private Long id;
+    private String companyName;
+    private Country country;
     private String city;
+    private List<Product> products;
 }

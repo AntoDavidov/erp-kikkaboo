@@ -10,7 +10,7 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Product {
-    private int productId;
+    private Long productId;
     private int sku;
     private String name;
     private String shortName;

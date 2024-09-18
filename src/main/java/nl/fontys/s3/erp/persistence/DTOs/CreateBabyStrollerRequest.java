@@ -26,6 +26,4 @@ public class CreateBabyStrollerRequest extends CreateProductRequest{
     @Builder.Default
     private boolean foldable = false;
 
-
-
 }
