@@ -1,29 +1,27 @@
 package nl.fontys.s3.erp.business.impl.converters;
 
-import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class ManufacturerConverter {
-    private ManufacturerConverter() {
+    private ManufacturerConverter() { }
 
-    };
     public static Manufacturer convert(ManufacturerEntity manufacturer) {
         return Manufacturer.builder()
                 .id(manufacturer.getId())
                 .companyName(manufacturer.getCompanyName())
                 .city(manufacturer.getCity())
-                .country(manufacturer.getCountry())  // No need for valueOf()
-                // Handle null products list by providing an empty list if it's null
-                .products(manufacturer.getProducts() != null ?
-                        manufacturer.getProducts().stream()
+                .country(manufacturer.getCountry())
+                .products(Optional.ofNullable(manufacturer.getProducts())
+                        .filter(products -> !products.isEmpty())
+                        .map(products -> products.stream()
                                 .map(ProductConverter::convert)
-                                .collect(Collectors.toList()) :
-                        Collections.emptyList())
+                                .collect(Collectors.toList()))
+                        .orElse(Collections.emptyList()))
                 .build();
-
     }
 }

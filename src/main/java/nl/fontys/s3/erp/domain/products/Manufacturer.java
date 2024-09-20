@@ -16,4 +16,6 @@ public class Manufacturer {
     private Country country;
     private String city;
     private List<Product> products;
+
+
 }
