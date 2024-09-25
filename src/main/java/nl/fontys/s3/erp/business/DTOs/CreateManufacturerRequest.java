@@ -1,5 +1,4 @@
-package nl.fontys.s3.erp.persistence.DTOs;
-
+package nl.fontys.s3.erp.business.DTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -8,17 +7,15 @@ import nl.fontys.s3.erp.domain.products.Country;
 
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
-public class UpdateManufacturerRequest {
-    private long manufacturerId;
+public class CreateManufacturerRequest {
+    @NotNull
+    private Country country;
 
     @NotBlank
     private String companyName;
-
-    @NotNull
-    private Country country;
 
     @NotBlank
     private String city;

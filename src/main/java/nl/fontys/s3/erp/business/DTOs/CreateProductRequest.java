@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.persistence.DTOs;
+package nl.fontys.s3.erp.business.DTOs;
 
 
 import jakarta.annotation.Nonnull;

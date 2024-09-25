@@ -1,10 +1,9 @@
 package nl.fontys.s3.erp.business.impl;
 
 import nl.fontys.s3.erp.business.impl.ManufacturersImpl.GetManufacturersUseCaseImpl;
-import nl.fontys.s3.erp.business.impl.converters.ManufacturerConverter;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
-import nl.fontys.s3.erp.persistence.DTOs.GetManufacturersResponse;
+import nl.fontys.s3.erp.business.DTOs.GetManufacturersResponse;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.junit.jupiter.api.Test;

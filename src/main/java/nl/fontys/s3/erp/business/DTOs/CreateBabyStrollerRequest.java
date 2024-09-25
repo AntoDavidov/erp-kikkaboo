@@ -1,11 +1,10 @@
-package nl.fontys.s3.erp.persistence.DTOs;
+package nl.fontys.s3.erp.business.DTOs;
 
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 
 @Getter
 @Setter

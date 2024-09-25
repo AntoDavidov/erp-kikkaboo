@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.GetManufacturersUseCase;
 import nl.fontys.s3.erp.business.impl.converters.ManufacturerConverter;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
-import nl.fontys.s3.erp.persistence.DTOs.GetManufacturersResponse;
+import nl.fontys.s3.erp.business.DTOs.GetManufacturersResponse;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import org.springframework.stereotype.Service;
 
