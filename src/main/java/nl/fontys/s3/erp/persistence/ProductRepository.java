@@ -9,13 +9,15 @@ public interface ProductRepository{
 
     ProductEntity save(ProductEntity product);
 
+    List<ProductEntity> findAllByManufacturerName(String manufacturerName);
+
     ProductEntity findById(long id);
 
     void deleteById(long id);
 
     boolean existsById(long id);
 
-    boolean existsBySKU(int sku);
+    boolean existsBySKU(String sku);
 
     List<ProductEntity> findAll();
 

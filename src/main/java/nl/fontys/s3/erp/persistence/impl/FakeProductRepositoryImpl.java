@@ -38,6 +38,15 @@ public class FakeProductRepositoryImpl implements ProductRepository {
         }
         return product;
     }
+
+    @Override
+    public List<ProductEntity> findAllByManufacturerName(String manufacturerName) {
+        return this.savedProducts
+                .stream()
+                .filter(productEntity -> productEntity.getManufacturer().getCompanyName().equals(manufacturerName))
+                .toList();
+    }
+
     @Override
     public ProductEntity findById(long productId){
         return this.savedProducts.stream().filter(product -> product.getProductId() == productId).findFirst().orElse(null);
@@ -59,7 +68,7 @@ public class FakeProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public boolean existsBySKU(int productSKU){
+    public boolean existsBySKU(String productSKU){
         return this.savedProducts.stream().anyMatch(p -> p.getSku() == productSKU);
 
     }

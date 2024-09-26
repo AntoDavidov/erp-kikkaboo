@@ -4,10 +4,10 @@ import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import nl.fontys.s3.erp.domain.products.Product;
 
 public class ProductConverter {
-    public ProductConverter(){
 
-
+    private ProductConverter() {
     }
+
     public static Product convert(ProductEntity productEntity) {
         return Product.builder()
                 .productId(productEntity.getProductId())
@@ -18,8 +18,10 @@ public class ProductConverter {
                 .costPrice(productEntity.getCostPrice())
                 .recommendedRetailPrice(productEntity.getRecommendedRetailPrice())
                 .wholeSalePrice(productEntity.getWholeSalePrice())
-                .manufacturer(productEntity.getManufacturer())  // Or convert if needed
+                .weight(productEntity.getWeight())
+                .imageUrl(productEntity.getImageUrl())
+                .manufacturer(ManufacturerConverter.convert(productEntity.getManufacturer()))
+                .weightClassification(productEntity.getWeightClassification())
                 .build();
     }
-
 }

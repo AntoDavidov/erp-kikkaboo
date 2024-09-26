@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class CreateProductResponse {
     private int productId;
 }
