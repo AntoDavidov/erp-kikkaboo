@@ -16,12 +16,11 @@ public class ManufacturerConverter {
                 .companyName(manufacturer.getCompanyName())
                 .city(manufacturer.getCity())
                 .country(manufacturer.getCountry())
-                .products(Optional.ofNullable(manufacturer.getProducts())
-                        .filter(products -> !products.isEmpty())
-                        .map(products -> products.stream()
-                                .map(ProductConverter::convert)
-                                .collect(Collectors.toList()))
-                        .orElse(Collections.emptyList()))
+//                .products(Optional.ofNullable(manufacturer.getProducts())
+//                        .map(products -> products.stream()
+//                                .map(ProductConverter::convert)
+//                                .collect(Collectors.toList()))
+//                        .orElse(Collections.emptyList()))  // Fallback to an empty list
                 .build();
     }
 }

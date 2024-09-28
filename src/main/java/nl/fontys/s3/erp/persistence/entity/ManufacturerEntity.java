@@ -23,7 +23,7 @@ public class ManufacturerEntity {
 
     private String city;
 
-    private List<ProductEntity> products;
+//    private List<ProductEntity> products;
 
 //    @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY)
 //    private List<ProductEntity> products = new ArrayList<>();

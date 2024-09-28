@@ -10,5 +10,5 @@ import lombok.experimental.SuperBuilder;
 @Getter
 @Setter
 public class CreateProductResponse {
-    private int productId;
+    private Long productId;
 }

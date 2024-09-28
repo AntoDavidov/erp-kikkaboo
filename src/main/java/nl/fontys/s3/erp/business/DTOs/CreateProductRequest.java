@@ -9,7 +9,18 @@ import lombok.experimental.SuperBuilder;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
 
 
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,  // Use the 'name' property to distinguish types
+        include = JsonTypeInfo.As.PROPERTY,  // Look for a property in the JSON to indicate type
+        property = "productType"  // The property in the JSON to look at
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = CreateBabyStrollerRequest.class, name = "BABY_STROLLER")
+        // Add other subclasses here when needed, e.g., @JsonSubTypes.Type(value = CreateCarSeatRequest.class, name = "CAR_SEAT")
+})
 @Getter
 @Setter
 @SuperBuilder
@@ -32,11 +43,11 @@ public class CreateProductRequest {
     @NotNull
     private double costPrice;
 
-    @NotNull
     private double recommendedRetailPrice;
 
-    @NotNull
     private double wholeSalePrice;
+
+    private String imageURL;
 
     @NotNull
     private int weight;

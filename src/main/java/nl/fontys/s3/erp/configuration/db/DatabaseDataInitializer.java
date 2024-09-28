@@ -1,11 +1,11 @@
 package nl.fontys.s3.erp.configuration.db;
 
 import lombok.AllArgsConstructor;
-import lombok.extern.apachecommons.CommonsLog;
 import nl.fontys.s3.erp.domain.products.Country;
-import nl.fontys.s3.erp.domain.products.Manufacturer;
+import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
+import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.event.EventListener;
@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 @AllArgsConstructor
 public class DatabaseDataInitializer {
     private ManufacturerRepository manufacturerRepository;
+    private ProductRepository productRepository;
 
     @EventListener(ApplicationReadyEvent.class)
     public void populateDatabaseInitialDummyData() {
@@ -52,6 +53,51 @@ public class DatabaseDataInitializer {
             manufacturerRepository.save(manufacturer2);
             manufacturerRepository.save(manufacturer3);
             manufacturerRepository.save(manufacturer4);
+
+            // Add two BabyStrollers
+            addBabyStrollers(manufacturer1, manufacturer2);
         }
+    }
+
+    private void addBabyStrollers(ManufacturerEntity manufacturer1, ManufacturerEntity manufacturer2) {
+        // Baby Stroller 1
+        BabyStrollersEntity babyStroller1 = BabyStrollersEntity.builder()
+                .sku("ST12345")
+                .name("Comfort Cruiser Stroller")
+                .shortName("Cruiser")
+                .description("A comfortable stroller with excellent shock absorption.")
+                .costPrice(150.00)
+                .recommendedRetailPrice(299.99)
+                .wholeSalePrice(200.00)
+                .manufacturer(manufacturer1)
+                .weight(9.5)
+                .imageUrl("https://example.com/images/stroller1.jpg")
+                .maxWeightCapacity(20.0)
+                .ageLimit(36)
+                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
+                .foldable(true)
+                .build();
+
+        // Baby Stroller 2
+        BabyStrollersEntity babyStroller2 = BabyStrollersEntity.builder()
+                .sku("ST98765")
+                .name("Swift Fold Compact Stroller")
+                .shortName("Swift")
+                .description("A lightweight, compact stroller that's easy to fold.")
+                .costPrice(120.00)
+                .recommendedRetailPrice(249.99)
+                .wholeSalePrice(180.00)
+                .manufacturer(manufacturer2)
+                .weight(7.8)
+                .imageUrl("https://example.com/images/stroller2.jpg")
+                .maxWeightCapacity(18.0)
+                .ageLimit(30)
+                .typeOfStroller(TypeOfStroller.TWINS)
+                .foldable(true)
+                .build();
+
+
+        productRepository.save(babyStroller1);
+        productRepository.save(babyStroller2);
     }
 }

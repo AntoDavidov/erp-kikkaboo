@@ -9,7 +9,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Product {
+public abstract class Product {
     private Long productId;
     private String sku;
     private String name;

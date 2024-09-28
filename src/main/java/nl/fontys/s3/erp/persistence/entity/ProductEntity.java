@@ -2,13 +2,16 @@ package nl.fontys.s3.erp.persistence.entity;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import nl.fontys.s3.erp.domain.products.Product;
+
+import java.util.Optional;
 
 
 @Getter @Setter
 @SuperBuilder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductEntity {
+public abstract class ProductEntity {
 
 
     private Long productId;
@@ -48,4 +51,5 @@ public class ProductEntity {
         double priceWithVAT = price * 1.20;
         return Math.floor(priceWithVAT) + 0.99;
     }
+
 }

@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FakeProductRepositoryImpl implements ProductRepository {
@@ -19,7 +20,7 @@ public class FakeProductRepositoryImpl implements ProductRepository {
     @Override
     public ProductEntity save(ProductEntity product) {
         if(product.getProductId() == null) {
-            product.setProductId(NEXT_ID++);
+            product.setProductId(NEXT_ID);
             NEXT_ID++;
             this.savedProducts.add(product);
         } else {
@@ -49,7 +50,10 @@ public class FakeProductRepositoryImpl implements ProductRepository {
 
     @Override
     public ProductEntity findById(long productId){
-        return this.savedProducts.stream().filter(product -> product.getProductId() == productId).findFirst().orElse(null);
+        return this.savedProducts.stream()
+                .filter(product -> product.getProductId() == productId)
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -59,7 +63,12 @@ public class FakeProductRepositoryImpl implements ProductRepository {
 
     @Override
     public void deleteById(long productId){
-        this.savedProducts.removeIf(p -> p.getProductId() == productId);
+        if(this.findById(productId) != null) {
+            this.savedProducts.remove(this.findById(productId));
+        }
+        else {
+            throw new RuntimeException("Product with id " + productId + " not found");
+        }
     }
 
     @Override
@@ -69,7 +78,7 @@ public class FakeProductRepositoryImpl implements ProductRepository {
 
     @Override
     public boolean existsBySKU(String productSKU){
-        return this.savedProducts.stream().anyMatch(p -> p.getSku() == productSKU);
+        return this.savedProducts.stream().anyMatch(p -> p.getSku().equals(productSKU));
 
     }
 

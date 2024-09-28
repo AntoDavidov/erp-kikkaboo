@@ -3,6 +3,7 @@ package nl.fontys.s3.erp.persistence;
 import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface ProductRepository{
