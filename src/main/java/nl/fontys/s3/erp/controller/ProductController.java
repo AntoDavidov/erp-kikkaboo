@@ -3,7 +3,7 @@ package nl.fontys.s3.erp.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.*;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.*;
 import nl.fontys.s3.erp.business.ProductsUseCases.*;
 import nl.fontys.s3.erp.domain.products.Product;
 import org.springframework.http.HttpStatus;

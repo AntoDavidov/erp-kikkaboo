@@ -2,13 +2,11 @@ package nl.fontys.s3.erp.business.impl.ProductsImpl;
 
 
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.CreateBabyStrollerRequest;
-import nl.fontys.s3.erp.business.DTOs.UpdateBabyStrollerRequest;
-import nl.fontys.s3.erp.business.DTOs.UpdateProductRequest;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateBabyStrollerRequest;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateProductRequest;
 import nl.fontys.s3.erp.business.ProductsUseCases.UpdateProductUseCase;
 import nl.fontys.s3.erp.business.exceptions.ProductDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
-import nl.fontys.s3.erp.domain.products.Product;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;

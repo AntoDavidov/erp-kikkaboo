@@ -1,12 +1,9 @@
-package nl.fontys.s3.erp.business.DTOs;
+package nl.fontys.s3.erp.business.DTOs.ProductDTOs;
 
 
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import nl.fontys.s3.erp.domain.products.Manufacturer;
 
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;

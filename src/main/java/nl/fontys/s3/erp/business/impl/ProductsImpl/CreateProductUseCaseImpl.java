@@ -3,17 +3,15 @@ package nl.fontys.s3.erp.business.impl.ProductsImpl;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.ProductsUseCases.CreateProductUseCase;
-import nl.fontys.s3.erp.business.DTOs.CreateBabyStrollerRequest;
-import nl.fontys.s3.erp.business.DTOs.CreateProductRequest;
-import nl.fontys.s3.erp.business.DTOs.CreateProductResponse;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
+import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
-import nl.fontys.s3.erp.domain.products.BabyStrollers;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
-import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +36,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
         if (request instanceof CreateBabyStrollerRequest) {
             CreateBabyStrollerRequest babyStrollerRequest = (CreateBabyStrollerRequest) request;
 
-            // Convert typeOfStroller from String to Enum
             TypeOfStroller typeOfStroller;
             try {
                 typeOfStroller = TypeOfStroller.valueOf(babyStrollerRequest.getTypeOfStroller().toUpperCase());
@@ -46,7 +43,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
                 throw new IllegalArgumentException("Invalid stroller type provided");
             }
 
-            // Build the BabyStrollersEntity directly, no need to initialize productEntity to null first
             BabyStrollersEntity babyStrollerEntity = BabyStrollersEntity.builder()
                     .sku(babyStrollerRequest.getSku())
                     .name(babyStrollerRequest.getName())
@@ -67,10 +63,8 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
             babyStrollerEntity.calculatePrices();
             babyStrollerEntity.classifyWeight();
 
-            //here I cast the saved product to Baby stroller entity
             BabyStrollersEntity savedProduct = (BabyStrollersEntity) productRepository.save(babyStrollerEntity);
 
-            // Return the response
             return CreateProductResponse.builder()
                     .productId(savedProduct.getProductId())
                     .build();
