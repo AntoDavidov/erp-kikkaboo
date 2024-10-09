@@ -15,7 +15,7 @@ public class Manufacturer {
     private String companyName;
     private Country country;
     private String city;
-    private List<Product> products;
+//    private List<Product> products;
 
 
 }

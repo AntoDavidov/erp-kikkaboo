@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.DTOs;
+package nl.fontys.s3.erp.business.DTOs.ProductDTOs;
 
 
 import lombok.*;
@@ -9,7 +9,6 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor
 @Getter
 @Setter
-
 public class CreateProductResponse {
-    private int productId;
+    private Long productId;
 }

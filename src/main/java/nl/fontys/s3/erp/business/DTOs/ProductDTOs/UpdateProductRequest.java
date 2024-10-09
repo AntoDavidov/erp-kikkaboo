@@ -1,26 +1,21 @@
-package nl.fontys.s3.erp.business.DTOs;
+package nl.fontys.s3.erp.business.DTOs.ProductDTOs;
 
-
-import jakarta.annotation.Nonnull;
-import jakarta.annotation.Nullable;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import nl.fontys.s3.erp.domain.products.Manufacturer;
-
-
 
 @Getter
 @Setter
-@SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateProductRequest {
+@SuperBuilder
+public class UpdateProductRequest {
+    private long id;
 
-    @NotNull
-    private int sku;
+    @Pattern(regexp = "\\d{8}", message = "The SKU must be exaclty 8 digits. Please try again!")
+    private String sku;
 
     @NotBlank
     private String name;
@@ -34,16 +29,15 @@ public class CreateProductRequest {
     @NotNull
     private double costPrice;
 
-    @NotNull
     private double recommendedRetailPrice;
 
-    @NotNull
     private double wholeSalePrice;
+
+    private String imageURL;
 
     @NotNull
     private int weight;
 
     @NotNull
-    private int ManufacturerId;
-
+    private Long ManufacturerId;
 }

@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.DTOs;
+package nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs;
 
 
 import lombok.Builder;

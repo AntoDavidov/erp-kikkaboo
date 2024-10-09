@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.DTOs;
+package nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
