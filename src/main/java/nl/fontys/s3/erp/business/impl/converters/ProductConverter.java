@@ -29,7 +29,7 @@ public class ProductConverter {
                     .ageLimit(babyStrollersEntity.getAgeLimit())  // BabyStrollers specific
                     .typeOfStroller(babyStrollersEntity.getTypeOfStroller())  // BabyStrollers specific
                     .foldable(babyStrollersEntity.isFoldable())  // BabyStrollers specific
-                    .weightClassification(babyStrollersEntity.getWeightClassification())
+//                    .weightClassification(babyStrollersEntity.getWeightClassification())
                     .build();
 
         }

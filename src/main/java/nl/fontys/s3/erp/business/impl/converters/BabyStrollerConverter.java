@@ -24,7 +24,7 @@ public class BabyStrollerConverter {
                 .weight(product.getWeight())
                 .imageUrl(product.getImageUrl())
                 .manufacturer(product.getManufacturer())
-                .weightClassification(product.getWeightClassification())
+                //.weightClassification(product.getWeightClassification())
                 //specific fields for baby stroller
                 .maxWeightCapacity(babyStrollersEntity.getMaxWeightCapacity())
                 .ageLimit(babyStrollersEntity.getAgeLimit())

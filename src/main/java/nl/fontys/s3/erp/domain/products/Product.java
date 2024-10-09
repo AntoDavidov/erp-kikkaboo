@@ -16,21 +16,29 @@ public abstract class Product {
     private String shortName;
     private String description;
     private double costPrice;
-    private double recommendedRetailPrice;
-    private double wholeSalePrice;
-    private double weight;
+    private double recommendedRetailPrice;//no need for them
+    private double wholeSalePrice;//no need for them
+    private double weight; //kg
     private Manufacturer manufacturer;
     private String imageUrl;
-    private String weightClassification;
+//    private String weightClassification; computed properties
 
-    public void classifyWeight() {
+    public String getWeightClassification(){
         if(this.weight >= 5){
-            this.weightClassification = "HEAVY".toUpperCase();
-        } else {
-            this.weightClassification = "LIGHT".toUpperCase();
-
+            return "HEAVY".toUpperCase();
+        } else{
+            return "LIGHT".toUpperCase();
         }
-    }
+    }//no need to store it
+
+//    public void classifyWeight() {
+//        if(this.weight >= 5){
+//            this.weightClassification = "HEAVY".toUpperCase();
+//        } else {
+//            this.weightClassification = "LIGHT".toUpperCase();
+//
+//        }
+//    }
 
     public void calculatePrices(){
         if(this.wholeSalePrice == 0){
