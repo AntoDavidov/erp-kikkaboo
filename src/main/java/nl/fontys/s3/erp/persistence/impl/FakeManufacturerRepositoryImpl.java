@@ -1,5 +1,6 @@
 package nl.fontys.s3.erp.persistence.impl;
 
+import nl.fontys.s3.erp.business.exceptions.ManufacturerAlreadyExists;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.springframework.stereotype.Repository;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public class FakeManufacturerRepositoryImpl implements ManufacturerRepository {
@@ -19,8 +21,10 @@ public class FakeManufacturerRepositoryImpl implements ManufacturerRepository {
 
 
     @Override
-    public ManufacturerEntity findById(long manufacturerId){
-        return this.savedManufacturers.stream().filter(m -> m.getId() == manufacturerId).findFirst().orElse(null);
+    public Optional<ManufacturerEntity> findById(long manufacturerId) {
+        return this.savedManufacturers.stream()
+                .filter(m -> m.getId() == manufacturerId)
+                .findFirst();
     }
 
     @Override
@@ -56,7 +60,8 @@ public class FakeManufacturerRepositoryImpl implements ManufacturerRepository {
             this.savedManufacturers.add(manufacturer);
 
         } else {
-            ManufacturerEntity existingManufacturer = this.findById(manufacturer.getId());
+            ManufacturerEntity existingManufacturer = this.findById(manufacturer.getId())
+                    .orElseThrow(ManufacturerAlreadyExists::new);
             if(existingManufacturer != null){
                 existingManufacturer.setCountry(manufacturer.getCountry());
                 existingManufacturer.setCity(manufacturer.getCity());

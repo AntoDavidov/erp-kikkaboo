@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
+import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
@@ -30,7 +31,8 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
 
         manufacturerIdValidator.validateManufacturerId(request.getManufacturerId());
 
-        ManufacturerEntity manufacturer = manufacturerRepository.findById(request.getManufacturerId());
+        ManufacturerEntity manufacturer = manufacturerRepository.findById(request.getManufacturerId())
+                .orElseThrow(ManufacturerDoesNotExist::new);
 
         // Check if the request is for creating a BabyStroller
         if (request instanceof CreateBabyStrollerRequest) {

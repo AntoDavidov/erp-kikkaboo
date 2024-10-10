@@ -18,24 +18,16 @@ public class UpdateManufacturerUseCaseImpl implements UpdateManufacturerUseCase 
 
     @Override
     public void updateManufacturer(UpdateManufacturerRequest request) {
-        Optional<ManufacturerEntity> manufacturerEntityOptional = Optional.ofNullable(manufacturerRepository.findById(request.getManufacturerId()));
-        if(manufacturerEntityOptional.isEmpty()) {
-            throw new ManufacturerDoesNotExist();
-
-        }
-        ManufacturerEntity manufacturerEntity = manufacturerEntityOptional.get();
+        ManufacturerEntity manufacturerEntity = manufacturerRepository.findById(request.getManufacturerId())
+                .orElseThrow(ManufacturerDoesNotExist::new);
 
         updateFields(request, manufacturerEntity);
         manufacturerRepository.save(manufacturerEntity);
-
-
     }
 
     private void updateFields(UpdateManufacturerRequest request, ManufacturerEntity manufacturerEntity) {
         manufacturerEntity.setCity(request.getCity());
         manufacturerEntity.setCountry(request.getCountry());
         manufacturerEntity.setCompanyName(request.getCompanyName());
-
     }
-
 }
