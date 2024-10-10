@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl;
+package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 
 import nl.fontys.s3.erp.business.impl.ManufacturersImpl.GetManufacturersUseCaseImpl;
 import nl.fontys.s3.erp.domain.products.Country;
@@ -12,9 +12,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -28,8 +30,8 @@ public class GetManufacturersUCImplTest {
     GetManufacturersUseCaseImpl getManufacturersUCImpl;
 
     @Test
-    void getManufacturer_ShouldGiveAllManufacturers() {
-        //step 1: setup expectation mock behavior
+    void getManufacturer_ShouldGiveAllManufacturers_HappyFlow() {
+        // Step 1: Mock entities
         ManufacturerEntity manufacturerEntity1 = ManufacturerEntity.builder()
                 .companyName("Weizhang")
                 .country(Country.CHINA)
@@ -42,19 +44,35 @@ public class GetManufacturersUCImplTest {
                 .city("Plovdiv")
                 .build();
 
-        // Step 2: Mock the repository to return the entities
+        // Step 2: Mock the repository behavior
         when(manufacturerRepository.findAll()).thenReturn(List.of(manufacturerEntity1, manufacturerEntity2));
 
-        //step 3: call method under test
+        // Step 3: Call the method under test
         GetManufacturersResponse response = getManufacturersUCImpl.getManufacturers();
 
-        // Step 4: Get the manufacturers from the response
+        // Step 4: Validate the expected response
         List<Manufacturer> manufacturerList = response.getManufacturers();
-
-        //step 5: validate expected mock behavior
         assertEquals(2, manufacturerList.size());
         assertEquals("Weizhang", manufacturerList.get(0).getCompanyName());
         assertEquals("TRAKIQ", manufacturerList.get(1).getCompanyName());
+
+        // Step 5: Verify interaction with the repository
+        verify(manufacturerRepository).findAll();
+    }
+
+    @Test
+    void getManufacturers_ShouldReturnEmptyList_UnhappyFlow() {
+        // Step 1: Mock the repository to return an empty list
+        when(manufacturerRepository.findAll()).thenReturn(Collections.emptyList());
+
+        // Step 2: Call the method under test
+        GetManufacturersResponse response = getManufacturersUCImpl.getManufacturers();
+
+        // Step 3: Validate that the returned list is empty
+        List<Manufacturer> manufacturerList = response.getManufacturers();
+        assertEquals(0, manufacturerList.size());
+
+        // Step 4: Verify interaction with the repository
         verify(manufacturerRepository).findAll();
     }
 }
