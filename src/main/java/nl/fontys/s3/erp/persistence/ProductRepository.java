@@ -12,7 +12,7 @@ public interface ProductRepository{
 
     List<ProductEntity> findAllByManufacturerName(String manufacturerName);
 
-    ProductEntity findById(long id);
+    Optional<ProductEntity> findById(long id);
 
     void deleteById(long id);
 

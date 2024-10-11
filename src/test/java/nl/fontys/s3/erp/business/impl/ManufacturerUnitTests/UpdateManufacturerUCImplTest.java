@@ -43,7 +43,7 @@ public class UpdateManufacturerUCImplTest {
 
         // Assert
         verify(manufacturerRepository).save(existingManufacturer);
-        assertEquals("Plovdiv", existingManufacturer.getCity());  // Correct expected city to "Plovdiv"
+        assertEquals("Plovdiv", existingManufacturer.getCity());
     }
 
     @Test

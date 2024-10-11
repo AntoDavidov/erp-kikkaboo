@@ -47,7 +47,7 @@ public class CreateProductRequest {
     private String imageURL;
 
     @NotNull
-    private int weight;
+    private double weight;
 
     @NotNull
     private Long ManufacturerId;

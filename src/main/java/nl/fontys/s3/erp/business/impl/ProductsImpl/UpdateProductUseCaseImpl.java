@@ -22,25 +22,18 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
 
     @Override
     public void updateProduct(UpdateProductRequest request) {
-        Optional<ProductEntity> productEntityOptional = Optional.ofNullable(productRepository.findById(request.getId()));
-        if (productEntityOptional.isEmpty()) {
-            throw new ProductDoesNotExist();
-        }
+        ProductEntity productEntity = productRepository.findById(request.getId())
+                .orElseThrow(ProductDoesNotExist::new);
 
-        if (productRepository.existsBySKU(request.getSku())) {
+        if (productRepository.existsBySKU(request.getSku()) && !productEntity.getSku().equals(request.getSku())) {
             throw new ProductExistsBySKU();
         }
-
-        ProductEntity productEntity = productEntityOptional.get();
-
-
         updateCommonFields(request, productEntity);
 
         if (request instanceof UpdateBabyStrollerRequest) {
             UpdateBabyStrollerRequest babyStrollerRequest = (UpdateBabyStrollerRequest) request;
             updateBabyStrollerFields((BabyStrollersEntity) productEntity, babyStrollerRequest);
         }
-
         productRepository.save(productEntity);
     }
 

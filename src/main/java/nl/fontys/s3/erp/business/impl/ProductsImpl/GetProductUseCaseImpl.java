@@ -20,11 +20,9 @@ public class GetProductUseCaseImpl implements GetProductUseCase {
 
     @Override
     public Product getProduct(long id) {
-        ProductEntity productEntity = productRepository.findById(id);
-        if(productEntity == null){
-            throw new ProductDoesNotExist();
-
-        }
-        return ProductConverter.convert(productEntity);
+        return productRepository.findById(id)
+                .map(ProductConverter::convert)
+                .orElseThrow(ProductDoesNotExist::new);
     }
+
 }
