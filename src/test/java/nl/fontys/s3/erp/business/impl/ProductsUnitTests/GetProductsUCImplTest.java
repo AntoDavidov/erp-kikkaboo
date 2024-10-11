@@ -47,15 +47,14 @@ public class GetProductsUCImplTest {
                 .costPrice(100.00)
                 .wholeSalePrice(110.00)
                 .recommendedRetailPrice(180.00)
-                .manufacturer(manufacturer)  // Set manufacturer to avoid null pointer
+                .manufacturer(manufacturer)
                 .build();
 
-        // Mock repository to return ProductEntity objects
         when(productRepository.findAllByManufacturerName("KikkaBoo")).thenReturn(List.of(product1));
 
         // Act
         GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts(); // Expecting domain objects (Product)
+        List<Product> productList = response.getProducts();
 
         // Assert
         assertEquals(1, productList.size());
@@ -66,7 +65,7 @@ public class GetProductsUCImplTest {
     @Test
     void getAllProducts_NoManufacturerName_HappyFlow() {
         // Arrange
-        GetAllProductsRequest request = new GetAllProductsRequest(); // No company name provided
+        GetAllProductsRequest request = new GetAllProductsRequest();
 
         ManufacturerEntity manufacturer = ManufacturerEntity.builder()
                 .companyName("KikkaBoo")
@@ -79,7 +78,7 @@ public class GetProductsUCImplTest {
                 .costPrice(100.00)
                 .wholeSalePrice(110.00)
                 .recommendedRetailPrice(180.00)
-                .manufacturer(manufacturer)  // Set manufacturer to avoid null pointer
+                .manufacturer(manufacturer)
                 .build();
 
         BabyStrollersEntity product2 = BabyStrollersEntity.builder()
@@ -88,15 +87,14 @@ public class GetProductsUCImplTest {
                 .costPrice(120.00)
                 .wholeSalePrice(130.00)
                 .recommendedRetailPrice(200.00)
-                .manufacturer(manufacturer)  // Set manufacturer to avoid null pointer
+                .manufacturer(manufacturer)
                 .build();
 
-        // Mock repository to return ProductEntity objects
         when(productRepository.findAll()).thenReturn(List.of(product1, product2));
 
         // Act
         GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts(); // Expecting domain objects (Product)
+        List<Product> productList = response.getProducts();
 
         // Assert
         assertEquals(2, productList.size());
@@ -108,14 +106,12 @@ public class GetProductsUCImplTest {
     @Test
     void getAllProducts_NoProducts_UnhappyFlow() {
         // Arrange
-        GetAllProductsRequest request = new GetAllProductsRequest(); // No company name provided
-
-        // Mock repository to return an empty list
+        GetAllProductsRequest request = new GetAllProductsRequest();
         when(productRepository.findAll()).thenReturn(List.of());
 
         // Act
         GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts(); // Expecting domain objects (Product)
+        List<Product> productList = response.getProducts();
 
         // Assert
         assertEquals(0, productList.size());
