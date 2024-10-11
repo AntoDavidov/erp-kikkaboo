@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.ProductsImpl;
+package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
 
 import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
@@ -6,6 +6,7 @@ import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
+import nl.fontys.s3.erp.business.impl.ProductsImpl.CreateProductUseCaseImpl;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
@@ -29,6 +30,9 @@ public class CreateProductUCImplTest {
 
     @Mock
     private ManufacturerRepository manufacturerRepository;
+
+    @Mock
+    private ManufacturerIdValidator manufacturerIdValidator;
 
     @InjectMocks
     private CreateProductUseCaseImpl createProductUseCase;
@@ -59,6 +63,8 @@ public class CreateProductUCImplTest {
         when(productRepository.existsBySKU("12345678")).thenReturn(false);
         when(manufacturerRepository.findById(1L)).thenReturn(java.util.Optional.of(manufacturer));
         when(productRepository.save(any(BabyStrollersEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        doNothing().when(manufacturerIdValidator).validateManufacturerId(1L);
 
         CreateProductResponse response = createProductUseCase.createProduct(request);
 
