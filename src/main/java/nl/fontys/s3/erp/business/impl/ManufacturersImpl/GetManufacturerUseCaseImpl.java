@@ -18,12 +18,10 @@ public class GetManufacturerUseCaseImpl implements GetManufacturerUseCase {
 
     @Override
     public Manufacturer getManufacturer(long manufacturerId) {
-        ManufacturerEntity manufacturer = manufacturerRepository.findById(manufacturerId);
-        if (manufacturer == null) {
-            throw new ManufacturerDoesNotExist();
-        }
+        ManufacturerEntity manufacturerEntity = manufacturerRepository.findById(manufacturerId)
+                .orElseThrow(ManufacturerDoesNotExist::new);
 
-        return ManufacturerConverter.convert(manufacturer);
+        return ManufacturerConverter.convert(manufacturerEntity);
 
     }
 

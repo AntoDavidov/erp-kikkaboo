@@ -1,6 +1,7 @@
 package nl.fontys.s3.erp.persistence.impl;
 
 
+import nl.fontys.s3.erp.business.exceptions.ProductDoesNotExist;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import org.springframework.stereotype.Repository;
@@ -24,7 +25,8 @@ public class FakeProductRepositoryImpl implements ProductRepository {
             NEXT_ID++;
             this.savedProducts.add(product);
         } else {
-            ProductEntity existingProduct = this.findById(product.getProductId());
+            ProductEntity existingProduct = this.findById(product.getProductId())
+                    .orElseThrow(ProductDoesNotExist::new);
             if(existingProduct != null) {
                 existingProduct.setName(product.getName());
                 existingProduct.setShortName(product.getShortName());
@@ -49,11 +51,10 @@ public class FakeProductRepositoryImpl implements ProductRepository {
     }
 
     @Override
-    public ProductEntity findById(long productId){
+    public Optional<ProductEntity> findById(long productId) {
         return this.savedProducts.stream()
                 .filter(product -> product.getProductId() == productId)
-                .findFirst()
-                .orElse(null);
+                .findFirst();
     }
 
     @Override

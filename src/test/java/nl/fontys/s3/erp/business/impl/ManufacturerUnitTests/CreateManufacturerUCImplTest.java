@@ -28,8 +28,7 @@ public class CreateManufacturerUCImplTest {
 
     @Test
     void createManufacturer_HappyFlow() {
-        // Step 1: Setup request and expected entity
-        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "Sofia", "KikkaBoo");
+        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "KikkaBoo", "Sofia");
 
         ManufacturerEntity manufacturerEntity = ManufacturerEntity.builder()
                 .companyName("KikkaBoo")
@@ -37,14 +36,11 @@ public class CreateManufacturerUCImplTest {
                 .city("Sofia")
                 .build();
 
-        // Step 2: Mock repository behavior
-        when(manufacturerRepository.existsByCompanyName("KikkaBoo")).thenReturn(false);
+        when(manufacturerRepository.existsByCompanyName(anyString())).thenReturn(false);  // Use anyString() for flexibility
         when(manufacturerRepository.save(any(ManufacturerEntity.class))).thenReturn(manufacturerEntity);
 
-        // Step 3: Call the method under test
         CreateManufacturerResponse response = createManufacturerUseCase.createManufacturer(request);
 
-        // Step 4: Validate the response
         assertEquals("KikkaBoo", manufacturerEntity.getCompanyName());
         verify(manufacturerRepository).existsByCompanyName("KikkaBoo");
         verify(manufacturerRepository).save(any(ManufacturerEntity.class));
@@ -52,18 +48,13 @@ public class CreateManufacturerUCImplTest {
 
     @Test
     void createManufacturer_AlreadyExists_UnhappyFlow() {
-        // Step 1: Setup request
-        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "Sofia", "KikkaBoo");
+        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "KikkaBoo", "Sofia");
+        when(manufacturerRepository.existsByCompanyName(anyString())).thenReturn(true);  // Use anyString() for flexibility
 
-        // Step 2: Mock repository behavior to simulate existing manufacturer
-        when(manufacturerRepository.existsByCompanyName("KikkaBoo")).thenReturn(true);
-
-        // Step 3: Call the method under test and expect exception
         assertThrows(ManufacturerAlreadyExists.class, () -> {
             createManufacturerUseCase.createManufacturer(request);
         });
 
-        // Step 4: Verify interactions with repository
         verify(manufacturerRepository).existsByCompanyName("KikkaBoo");
         verify(manufacturerRepository, never()).save(any(ManufacturerEntity.class));
     }

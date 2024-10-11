@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
+import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
@@ -24,24 +25,19 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
 
     @Override
     public CreateProductResponse createProduct(CreateProductRequest request) {
-        if (productRepository.existsBySKU(request.getSku())) {
-            throw new ProductExistsBySKU();
-        }
-
-        manufacturerIdValidator.validateManufacturerId(request.getManufacturerId());
-
-        ManufacturerEntity manufacturer = manufacturerRepository.findById(request.getManufacturerId());
-
         // Check if the request is for creating a BabyStroller
         if (request instanceof CreateBabyStrollerRequest) {
-            CreateBabyStrollerRequest babyStrollerRequest = (CreateBabyStrollerRequest) request;
-
-            TypeOfStroller typeOfStroller;
-            try {
-                typeOfStroller = TypeOfStroller.valueOf(babyStrollerRequest.getTypeOfStroller().toUpperCase());
-            } catch (IllegalArgumentException e) {
-                throw new IllegalArgumentException("Invalid stroller type provided");
+            if (productRepository.existsBySKU(request.getSku())) {
+                throw new ProductExistsBySKU();
             }
+
+            manufacturerIdValidator.validateManufacturerId(request.getManufacturerId());
+
+            ManufacturerEntity manufacturer = manufacturerRepository.findById(request.getManufacturerId())
+                    .orElseThrow(ManufacturerDoesNotExist::new);
+
+
+            CreateBabyStrollerRequest babyStrollerRequest = (CreateBabyStrollerRequest) request;
 
             BabyStrollersEntity babyStrollerEntity = BabyStrollersEntity.builder()
                     .sku(babyStrollerRequest.getSku())
@@ -56,7 +52,7 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
                     .imageUrl(babyStrollerRequest.getImageURL())
                     .maxWeightCapacity(babyStrollerRequest.getMaxWeightCapacity())
                     .ageLimit(babyStrollerRequest.getAgeLimit())
-                    .typeOfStroller(typeOfStroller)
+                    .typeOfStroller(babyStrollerRequest.getTypeOfStroller())
                     .foldable(babyStrollerRequest.isFoldable())
                     .build();
 

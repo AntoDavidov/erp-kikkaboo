@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 
 @Getter
 @Setter
@@ -20,7 +21,7 @@ public class CreateBabyStrollerRequest extends CreateProductRequest{
     private int ageLimit;
 
     @NotBlank
-    private String typeOfStroller;
+    private TypeOfStroller typeOfStroller;
 
     @Builder.Default
     private boolean foldable = false;
