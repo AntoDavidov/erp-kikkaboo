@@ -48,11 +48,60 @@ public class DatabaseDataInitializer {
                     .city("Plovdiv")
                     .build();
 
+            ManufacturerEntity manufacturer5 = ManufacturerEntity.builder()
+                    .companyName("Baby Star")
+                    .country(Country.CHINA)
+                    .city("Shanghai")
+                    .build();
+
+            ManufacturerEntity manufacturer6 = ManufacturerEntity.builder()
+                    .companyName("Weibang Structure")
+                    .country(Country.CHINA)
+                    .city("Shenzhen")
+                    .build();
+
+            ManufacturerEntity manufacturer7 = ManufacturerEntity.builder()
+                    .companyName("Kika Group ltd.")
+                    .country(Country.BULGARIA)
+                    .city("Sofia")
+                    .build();
+
+            ManufacturerEntity manufacturer8 = ManufacturerEntity.builder()
+                    .companyName("Hus ltd.")
+                    .country(Country.BULGARIA)
+                    .city("Varna")
+                    .build();
+
+            ManufacturerEntity manufacturer9 = ManufacturerEntity.builder()
+                    .companyName("Arh City Stroy ltd.")
+                    .country(Country.BULGARIA)
+                    .city("Plovdiv")
+                    .build();
+
+            ManufacturerEntity manufacturer10 = ManufacturerEntity.builder()
+                    .companyName("Hippo Dreams")
+                    .country(Country.CHINA)
+                    .city("Guangzhou")
+                    .build();
+
+            ManufacturerEntity manufacturer11 = ManufacturerEntity.builder()
+                    .companyName("ADSA")
+                    .country(Country.CHINA)
+                    .city("Hong Kong")
+                    .build();
+
             // Save all manufacturers
             manufacturerRepository.save(manufacturer1);
             manufacturerRepository.save(manufacturer2);
             manufacturerRepository.save(manufacturer3);
             manufacturerRepository.save(manufacturer4);
+            manufacturerRepository.save(manufacturer5);
+            manufacturerRepository.save(manufacturer6);
+            manufacturerRepository.save(manufacturer7);
+            manufacturerRepository.save(manufacturer8);
+            manufacturerRepository.save(manufacturer9);
+            manufacturerRepository.save(manufacturer10);
+            manufacturerRepository.save(manufacturer11);
 
             // Add two BabyStrollers
             addBabyStrollers(manufacturer1, manufacturer2);
