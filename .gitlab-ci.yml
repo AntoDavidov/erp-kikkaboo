@@ -8,6 +8,7 @@ variables:
 stages:
   - build
   - test
+  - sonar
 
 build:
   stage: build
@@ -19,3 +20,9 @@ test:
   stage: test
   script:
     - ./gradlew test
+
+
+sonar:
+  stage: sonar
+  script:
+    - ./gradlew test jacocoTestReport sonar
