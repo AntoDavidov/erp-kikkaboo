@@ -3,6 +3,7 @@ package nl.fontys.s3.erp.business.impl.ManufacturersImpl;
 
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.UpdateManufacturerUseCase;
+import nl.fontys.s3.erp.business.exceptions.ManufacturerAlreadyExists;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.UpdateManufacturerRequest;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
@@ -21,8 +22,12 @@ public class UpdateManufacturerUseCaseImpl implements UpdateManufacturerUseCase 
         Optional<ManufacturerEntity> manufacturerEntityOptional = Optional.ofNullable(manufacturerRepository.findById(request.getManufacturerId()));
         if(manufacturerEntityOptional.isEmpty()) {
             throw new ManufacturerDoesNotExist();
-
         }
+
+        if(manufacturerRepository.existsByCompanyName(request.getCompanyName())) {
+            throw new ManufacturerAlreadyExists();
+        }
+
         ManufacturerEntity manufacturerEntity = manufacturerEntityOptional.get();
 
         updateFields(request, manufacturerEntity);
