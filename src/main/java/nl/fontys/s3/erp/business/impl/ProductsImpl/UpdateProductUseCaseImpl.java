@@ -25,7 +25,7 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
         ProductEntity productEntity = productRepository.findById(request.getId())
                 .orElseThrow(ProductDoesNotExist::new);
 
-        if (productRepository.existsBySKU(request.getSku()) && !productEntity.getSku().equals(request.getSku())) {
+        if (productRepository.existsBySku(request.getSku()) && !productEntity.getSku().equals(request.getSku())) {
             throw new ProductExistsBySKU();
         }
         updateCommonFields(request, productEntity);

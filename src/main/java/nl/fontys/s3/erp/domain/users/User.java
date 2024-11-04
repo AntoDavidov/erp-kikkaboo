@@ -7,6 +7,7 @@ import java.time.Instant;
 
 import java.text.DateFormat;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -21,7 +22,7 @@ public class User {
     private String email;
     private String password;
     private String phone;
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
     private Status status;
     private Department department;
     private Role role;

@@ -22,4 +22,20 @@ public class UserConverter {
                 .salary(userEntity.getSalary())
                 .build();
     }
+
+    public static UserEntity convert(User user) {
+        return UserEntity.builder()
+                .firstName(user.getFirstName())
+                .lastName(user.getLastName())
+                .address(user.getAddress())
+                .email(user.getEmail())
+                .password(user.getPassword())
+                .phone(user.getPhone())
+                .dateOfBirth(user.getDateOfBirth())
+                .status(user.getStatus())
+                .department(user.getDepartment())
+                .role(user.getRole())
+                .salary(user.getSalary())
+                .build();
+    }
 }

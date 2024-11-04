@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.AnnouncementsUseCases.UpdateAnnouncementUseCase;
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.UpdateAnnouncementRequest;
 import nl.fontys.s3.erp.business.exceptions.AnnouncementDoesNotExist;
+import nl.fontys.s3.erp.business.impl.converters.UserConverter;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
 import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;
 import org.springframework.stereotype.Service;
@@ -18,7 +19,7 @@ public class UpdateAnnouncementUseCaseImpl implements UpdateAnnouncementUseCase 
 
     @Override
     public void updateAnnouncement(UpdateAnnouncementRequest request) {
-        Optional<AnnouncementEntity> announcementEntity = Optional.ofNullable(announcementRepository.findById(request.getId()));
+        Optional<AnnouncementEntity> announcementEntity = announcementRepository.findById(request.getId());
 
         if(announcementEntity.isEmpty()) {
             throw new AnnouncementDoesNotExist();
@@ -33,7 +34,7 @@ public class UpdateAnnouncementUseCaseImpl implements UpdateAnnouncementUseCase 
         entity.setTitle(request.getTitle());
         entity.setContent(request.getContent());
         entity.setCreatedAt(request.getCreatedAt());
-        entity.setCreatedBy(request.getCreatedBy());
+        entity.setCreatedBy(UserConverter.convert(request.getCreatedBy()));
         entity.setDepartment(request.getDepartment());
         entity.setExpirationDate(request.getExpirationDate());
         entity.setType(request.getType());

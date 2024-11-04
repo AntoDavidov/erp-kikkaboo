@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Pattern;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
+import java.math.BigDecimal;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -27,16 +29,16 @@ public class UpdateProductRequest {
     private String description;
 
     @NotNull
-    private double costPrice;
+    private BigDecimal costPrice;
 
-    private double recommendedRetailPrice;
+    private BigDecimal recommendedRetailPrice;
 
-    private double wholeSalePrice;
+    private BigDecimal wholeSalePrice;
 
     private String imageURL;
 
     @NotNull
-    private int weight;
+    private BigDecimal weight;
 
     @NotNull
     private Long ManufacturerId;

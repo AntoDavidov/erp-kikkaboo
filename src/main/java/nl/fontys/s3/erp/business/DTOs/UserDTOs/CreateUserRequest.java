@@ -11,6 +11,7 @@ import nl.fontys.s3.erp.domain.users.Status;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Getter
 @Setter
@@ -39,7 +40,7 @@ public class CreateUserRequest {
     private String phone;
 
     @NotNull
-    private LocalDate dateOfBirth;
+    private Date dateOfBirth;
 
     @NotNull
     private Status status;

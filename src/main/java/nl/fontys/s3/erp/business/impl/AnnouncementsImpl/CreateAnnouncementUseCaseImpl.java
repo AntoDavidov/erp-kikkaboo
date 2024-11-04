@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.AnnouncementsUseCases.CreateAnnouncementUseCase;
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementRequest;
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementResponse;
+import nl.fontys.s3.erp.business.impl.converters.UserConverter;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
 import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;
 import org.springframework.stereotype.Service;
@@ -27,7 +28,7 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
                 .title(request.getTitle())
                 .content(request.getContent())
                 .createdAt(request.getCreatedAt())
-                .createdBy(request.getCreatedBy())
+                .createdBy(UserConverter.convert(request.getCreatedBy()))
                 .department(request.getDepartment())
                 .expirationDate(request.getExpirationDate())
                 .type(request.getType())
@@ -36,4 +37,5 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
 
         return announcementRepository.save(newAnnouncementEntity);
     }
+
 }

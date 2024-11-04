@@ -18,7 +18,7 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
 
     @Override
     public void updateUser(UpdateUserRequest request) {
-        Optional<UserEntity> userEntity = Optional.ofNullable(userRepository.findById(request.getUserId()));
+        Optional<UserEntity> userEntity = userRepository.findById(request.getUserId());
 
         if (userEntity.isEmpty()) {
             throw new UserDoesNotExist();

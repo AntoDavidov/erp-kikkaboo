@@ -17,10 +17,8 @@ public class GetUserUseCaseImpl implements GetUserUseCase {
 
     @Override
     public User getUser(long id) {
-        UserEntity user = userRepository.findById(id);
-        if(user == null){
-            throw new UserDoesNotExist();
-        }
+        UserEntity user = userRepository.findById(id)
+                .orElseThrow(UserDoesNotExist::new);
         return UserConverter.convert(user);
     }
 }

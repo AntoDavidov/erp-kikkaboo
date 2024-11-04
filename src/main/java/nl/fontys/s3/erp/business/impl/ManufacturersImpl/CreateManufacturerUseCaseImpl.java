@@ -18,7 +18,7 @@ public class CreateManufacturerUseCaseImpl implements CreateManufacturerUseCase 
 
     @Override
     public CreateManufacturerResponse createManufacturer(CreateManufacturerRequest request) {
-        if(manufacturerRepository.existsByCompanyName(request.getCompanyName())) {
+        if(manufacturerRepository.existsByCompanyNameCustom(request.getCompanyName())) {
             throw new ManufacturerAlreadyExists();
         }
         ManufacturerEntity savedManufacturers = saveNewManufacturer(request);
