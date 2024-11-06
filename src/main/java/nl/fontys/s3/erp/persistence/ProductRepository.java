@@ -16,6 +16,4 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     @Query("SELECT p FROM ProductEntity p WHERE p.manufacturer.companyName = :companyName")
     List<ProductEntity> findAllByManufacturerName(@Param("companyName") String companyName);
 
-
-
 }
