@@ -19,7 +19,7 @@ import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
-@Table(name = "user")
+@Table(name = "\"user\"")
 @Getter
 @Setter
 @AllArgsConstructor

@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.exceptions.AnnouncementDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.UserDoesNotExist;
 import nl.fontys.s3.erp.domain.announcements.Announcement;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
+import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -22,3 +23,4 @@ public class DeleteAnnouncementUseCaseImpl implements DeleteAnnouncementUseCase 
         announcementRepository.deleteById(id);
     }
 }
+//ask how to get current user

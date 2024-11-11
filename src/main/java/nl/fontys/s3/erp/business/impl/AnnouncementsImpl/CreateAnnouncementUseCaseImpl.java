@@ -4,11 +4,14 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.AnnouncementsUseCases.CreateAnnouncementUseCase;
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementRequest;
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementResponse;
+import nl.fontys.s3.erp.business.exceptions.AnnouncementCannotBeEditedBySpecialist;
 import nl.fontys.s3.erp.business.impl.converters.UserConverter;
+import nl.fontys.s3.erp.domain.users.Role;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
 import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;
 import org.springframework.stereotype.Service;
 
+//ask how to get current user
 @Service
 @AllArgsConstructor
 public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase {
@@ -16,6 +19,10 @@ public class CreateAnnouncementUseCaseImpl implements CreateAnnouncementUseCase 
 
     @Override
     public CreateAnnouncementResponse createAnnouncement(CreateAnnouncementRequest request) {
+        if(request.getCreatedBy().getRole() == Role.SPECIALIST){
+            throw new AnnouncementCannotBeEditedBySpecialist();
+        }
+
         AnnouncementEntity announcementEntity = saveNewAnnouncement(request);
 
         return CreateAnnouncementResponse.builder()
