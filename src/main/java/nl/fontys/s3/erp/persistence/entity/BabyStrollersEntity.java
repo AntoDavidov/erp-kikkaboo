@@ -12,8 +12,8 @@ import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-//@Entity
-//@Table(name = "baby_stroller")
+@Entity
+@DiscriminatorValue("BABY_STROLLER")
 @SuperBuilder
 public class BabyStrollersEntity extends ProductEntity {
 

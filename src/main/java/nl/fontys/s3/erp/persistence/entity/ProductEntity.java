@@ -16,6 +16,8 @@ import java.util.Optional;
 
 @Entity
 @Table(name = "product")
+@Inheritance(strategy = InheritanceType.JOINED)
+@DiscriminatorColumn(name = "product_type", discriminatorType = DiscriminatorType.STRING)
 @Getter @Setter
 @SuperBuilder
 @NoArgsConstructor
