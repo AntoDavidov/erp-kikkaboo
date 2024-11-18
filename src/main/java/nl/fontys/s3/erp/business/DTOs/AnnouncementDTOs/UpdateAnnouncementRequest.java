@@ -11,6 +11,8 @@ import nl.fontys.s3.erp.domain.users.Department;
 import nl.fontys.s3.erp.domain.users.User;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+
 @Getter
 @Setter
 @Builder
@@ -25,7 +27,7 @@ public class UpdateAnnouncementRequest {
     private String content;
 
     @NotNull
-    private LocalDateTime createdAt;
+    private Date createdAt;
 
     @NotNull
     private User createdBy;
@@ -34,7 +36,7 @@ public class UpdateAnnouncementRequest {
     private Department department;
 
     @NotNull
-    private LocalDateTime expirationDate;
+    private Date expirationDate;
 
     @NotNull
     private AnnouncementType type;

@@ -18,6 +18,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -49,10 +51,10 @@ public class CreateProductUCImplTest {
                 .name("Baby Stroller")
                 .shortName("Stroller")
                 .description("High quality baby stroller")
-                .costPrice(100.0)
-                .recommendedRetailPrice(200.0)
-                .wholeSalePrice(150.0)
-                .weight(10)
+                .costPrice(BigDecimal.valueOf(100.0))
+                .recommendedRetailPrice(BigDecimal.valueOf(200.0))
+                .wholeSalePrice(BigDecimal.valueOf(150.0))
+                .weight(BigDecimal.valueOf(10))
                 .ManufacturerId(1L)
                 .maxWeightCapacity(20)
                 .ageLimit(2)
@@ -60,7 +62,7 @@ public class CreateProductUCImplTest {
                 .foldable(true)
                 .build();
 
-        when(productRepository.existsBySKU("12345678")).thenReturn(false);
+        when(productRepository.existsBySku("12345678")).thenReturn(false);
         when(manufacturerRepository.findById(1L)).thenReturn(java.util.Optional.of(manufacturer));
         when(productRepository.save(any(BabyStrollersEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
@@ -80,7 +82,7 @@ public class CreateProductUCImplTest {
                 .ManufacturerId(1L)
                 .build();
 
-        when(productRepository.existsBySKU("12345678")).thenReturn(true);
+        when(productRepository.existsBySku("12345678")).thenReturn(true);
 
         assertThrows(ProductExistsBySKU.class, () -> createProductUseCase.createProduct(request));
         verify(productRepository, never()).save(any(BabyStrollersEntity.class));

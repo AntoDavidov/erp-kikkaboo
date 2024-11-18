@@ -12,7 +12,7 @@ public class AnnouncementConverter {
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
-                .createdBy(entity.getCreatedBy())
+                .createdBy(UserConverter.convert(entity.getCreatedBy()))
                 .department(entity.getDepartment())
                 .expirationDate(entity.getExpirationDate())
                 .type(entity.getType())

@@ -13,6 +13,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.math.BigDecimal;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.verify;
@@ -44,9 +46,9 @@ public class GetProductsUCImplTest {
         BabyStrollersEntity product1 = BabyStrollersEntity.builder()
                 .sku("12345678")
                 .name("BabyStroller 1")
-                .costPrice(100.00)
-                .wholeSalePrice(110.00)
-                .recommendedRetailPrice(180.00)
+                .costPrice(BigDecimal.valueOf(100.0))
+                .wholeSalePrice(BigDecimal.valueOf(110.0))
+                .recommendedRetailPrice(BigDecimal.valueOf(180.0))
                 .manufacturer(manufacturer)
                 .build();
 
@@ -75,18 +77,18 @@ public class GetProductsUCImplTest {
         BabyStrollersEntity product1 = BabyStrollersEntity.builder()
                 .sku("12345678")
                 .name("BabyStroller 1")
-                .costPrice(100.00)
-                .wholeSalePrice(110.00)
-                .recommendedRetailPrice(180.00)
+                .costPrice(BigDecimal.valueOf(100.0))
+                .wholeSalePrice(BigDecimal.valueOf(110.0))
+                .recommendedRetailPrice(BigDecimal.valueOf(180.0))
                 .manufacturer(manufacturer)
                 .build();
 
         BabyStrollersEntity product2 = BabyStrollersEntity.builder()
                 .sku("87654321")
                 .name("BabyStroller 2")
-                .costPrice(120.00)
-                .wholeSalePrice(130.00)
-                .recommendedRetailPrice(200.00)
+                .costPrice(BigDecimal.valueOf(120.00))
+                .wholeSalePrice(BigDecimal.valueOf(130.0))
+                .recommendedRetailPrice(BigDecimal.valueOf(200.0))
                 .manufacturer(manufacturer)
                 .build();
 

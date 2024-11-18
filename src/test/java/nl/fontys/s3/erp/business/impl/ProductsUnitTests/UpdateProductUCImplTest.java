@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -38,11 +39,11 @@ public class UpdateProductUCImplTest {
                 .name("New Stroller")
                 .shortName("Stroller")
                 .description("Updated description")
-                .costPrice(200)
-                .recommendedRetailPrice(300)
-                .wholeSalePrice(250)
+                .costPrice(BigDecimal.valueOf(200))
+                .recommendedRetailPrice(BigDecimal.valueOf(300.0))
+                .wholeSalePrice(BigDecimal.valueOf(250.0))
                 .imageURL("imageUrl")
-                .weight(4)
+                .weight(BigDecimal.valueOf(4))
                 .maxWeightCapacity(25)
                 .ageLimit(36)
                 .typeOfStroller("THREE_IN_ONE")
@@ -55,14 +56,14 @@ public class UpdateProductUCImplTest {
                 .name("Old Stroller")
                 .shortName("Old")
                 .description("Old description")
-                .costPrice(150)
-                .recommendedRetailPrice(250)
-                .wholeSalePrice(200)
-                .weight(5)
+                .costPrice(BigDecimal.valueOf(150.0))
+                .recommendedRetailPrice(BigDecimal.valueOf(250.0))
+                .wholeSalePrice(BigDecimal.valueOf(200.0))
+                .weight(BigDecimal.valueOf(5))
                 .build();
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
-        when(productRepository.existsBySKU(request.getSku())).thenReturn(false);
+        when(productRepository.existsBySku(request.getSku())).thenReturn(false);
 
         updateProductUseCase.updateProduct(request);
 
@@ -101,7 +102,7 @@ public class UpdateProductUCImplTest {
                 .build();
 
         when(productRepository.findById(1L)).thenReturn(Optional.of(existingProduct));
-        when(productRepository.existsBySKU(request.getSku())).thenReturn(true);  // SKU already exists
+        when(productRepository.existsBySku(request.getSku())).thenReturn(true);  // SKU already exists
 
         assertThrows(ProductExistsBySKU.class, () -> updateProductUseCase.updateProduct(request));
         verify(productRepository, never()). save(any(ProductEntity.class));

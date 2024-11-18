@@ -29,11 +29,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.6.0'
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'mysql:mysql-connector-java:8.0.33'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'com.h2database:h2:2.3.232'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.flywaydb:flyway-mysql'
 }
 
 tasks.named('test') {
@@ -42,10 +48,10 @@ tasks.named('test') {
 
 sonar{
     properties{
-        property("sonar.projectKey", "sonar-demo")
-        property("sonar.projectName", "sonar-demo")
+        property("sonar.projectKey", "sonar-erp")
+        property("sonar.projectName", "sonar-erp")
         property("sonar.host.url", "http://localhost:9000")
-        property("sonar.token", "sqp_910b7f4635bf5d5c20ade7bf032455b16e580bd5")
+        property("sonar.token", "sqp_8415dd5aaba88b0102b6fe1174270c5d380e29bc")
 
     }
 }

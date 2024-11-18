@@ -16,10 +16,8 @@ public class GetAnnouncementUseCaseImpl implements GetAnnouncementUseCase {
 
     @Override
     public Announcement getAnnouncement(long id) {
-        AnnouncementEntity announcementEntity = announcementRepository.findById(id);
-        if(announcementEntity == null){
-            throw new AnnouncementDoesNotExist();
-        }
+        AnnouncementEntity announcementEntity = announcementRepository.findById(id)
+                .orElseThrow(AnnouncementDoesNotExist::new);
         return AnnouncementConverter.convert(announcementEntity);
     }
 }

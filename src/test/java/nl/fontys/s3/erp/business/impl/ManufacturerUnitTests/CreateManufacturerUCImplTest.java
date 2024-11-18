@@ -36,26 +36,26 @@ public class CreateManufacturerUCImplTest {
                 .city("Sofia")
                 .build();
 
-        when(manufacturerRepository.existsByCompanyName(anyString())).thenReturn(false);  // Use anyString() for flexibility
+        when(manufacturerRepository.existsByCompanyNameCustom(anyString())).thenReturn(false);  // Use anyString() for flexibility
         when(manufacturerRepository.save(any(ManufacturerEntity.class))).thenReturn(manufacturerEntity);
 
         CreateManufacturerResponse response = createManufacturerUseCase.createManufacturer(request);
 
         assertEquals("KikkaBoo", manufacturerEntity.getCompanyName());
-        verify(manufacturerRepository).existsByCompanyName("KikkaBoo");
+        verify(manufacturerRepository).existsByCompanyNameCustom("KikkaBoo");
         verify(manufacturerRepository).save(any(ManufacturerEntity.class));
     }
 
     @Test
     void createManufacturer_AlreadyExists_UnhappyFlow() {
         CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "KikkaBoo", "Sofia");
-        when(manufacturerRepository.existsByCompanyName(anyString())).thenReturn(true);  // Use anyString() for flexibility
+        when(manufacturerRepository.existsByCompanyNameCustom(anyString())).thenReturn(true);  // Use anyString() for flexibility
 
         assertThrows(ManufacturerAlreadyExists.class, () -> {
             createManufacturerUseCase.createManufacturer(request);
         });
 
-        verify(manufacturerRepository).existsByCompanyName("KikkaBoo");
+        verify(manufacturerRepository).existsByCompanyNameCustom("KikkaBoo");
         verify(manufacturerRepository, never()).save(any(ManufacturerEntity.class));
     }
 }

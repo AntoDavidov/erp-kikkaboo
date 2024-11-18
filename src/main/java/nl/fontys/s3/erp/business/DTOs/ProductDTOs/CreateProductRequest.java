@@ -9,6 +9,8 @@ import lombok.experimental.SuperBuilder;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 
+import java.math.BigDecimal;
+
 @JsonTypeInfo(
         use = JsonTypeInfo.Id.NAME,  // Use the 'name' property to distinguish types
         include = JsonTypeInfo.As.PROPERTY,  // Look for a property in the JSON to indicate type
@@ -38,16 +40,16 @@ public class CreateProductRequest {
     private String description;
 
     @NotNull
-    private double costPrice;
+    private BigDecimal costPrice;
 
-    private double recommendedRetailPrice;
+    private BigDecimal recommendedRetailPrice;
 
-    private double wholeSalePrice;
+    private BigDecimal wholeSalePrice;
 
     private String imageURL;
 
     @NotNull
-    private double weight;
+    private BigDecimal weight;
 
     @NotNull
     private Long ManufacturerId;

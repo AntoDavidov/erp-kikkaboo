@@ -109,44 +109,44 @@ public class DatabaseDataInitializer {
     }
 
     private void addBabyStrollers(ManufacturerEntity manufacturer1, ManufacturerEntity manufacturer2) {
-        // Baby Stroller 1
-        BabyStrollersEntity babyStroller1 = BabyStrollersEntity.builder()
-                .sku("ST12345")
-                .name("Comfort Cruiser Stroller")
-                .shortName("Cruiser")
-                .description("A comfortable stroller with excellent shock absorption.")
-                .costPrice(150.00)
-                .recommendedRetailPrice(299.99)
-                .wholeSalePrice(200.00)
-                .manufacturer(manufacturer1)
-                .weight(9.5)
-                .imageUrl("https://example.com/images/stroller1.jpg")
-                .maxWeightCapacity(20.0)
-                .ageLimit(36)
-                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
-                .foldable(true)
-                .build();
-
-        // Baby Stroller 2
-        BabyStrollersEntity babyStroller2 = BabyStrollersEntity.builder()
-                .sku("ST98765")
-                .name("Swift Fold Compact Stroller")
-                .shortName("Swift")
-                .description("A lightweight, compact stroller that's easy to fold.")
-                .costPrice(120.00)
-                .recommendedRetailPrice(249.99)
-                .wholeSalePrice(180.00)
-                .manufacturer(manufacturer2)
-                .weight(7.8)
-                .imageUrl("https://example.com/images/stroller2.jpg")
-                .maxWeightCapacity(18.0)
-                .ageLimit(30)
-                .typeOfStroller(TypeOfStroller.TWINS)
-                .foldable(true)
-                .build();
-
-
-        productRepository.save(babyStroller1);
-        productRepository.save(babyStroller2);
+//        // Baby Stroller 1
+//        BabyStrollersEntity babyStroller1 = BabyStrollersEntity.builder()
+//                .sku("ST12345")
+//                .name("Comfort Cruiser Stroller")
+//                .shortName("Cruiser")
+//                .description("A comfortable stroller with excellent shock absorption.")
+//                .costPrice(150.00)
+//                .recommendedRetailPrice(299.99)
+//                .wholeSalePrice(200.00)
+//                .manufacturer(manufacturer1)
+//                .weight(9.5)
+//                .imageUrl("https://example.com/images/stroller1.jpg")
+//                .maxWeightCapacity(20.0)
+//                .ageLimit(36)
+//                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
+//                .foldable(true)
+//                .build();
+//
+//        // Baby Stroller 2
+//        BabyStrollersEntity babyStroller2 = BabyStrollersEntity.builder()
+//                .sku("ST98765")
+//                .name("Swift Fold Compact Stroller")
+//                .shortName("Swift")
+//                .description("A lightweight, compact stroller that's easy to fold.")
+//                .costPrice(120.00)
+//                .recommendedRetailPrice(249.99)
+//                .wholeSalePrice(180.00)
+//                .manufacturer(manufacturer2)
+//                .weight(7.8)
+//                .imageUrl("https://example.com/images/stroller2.jpg")
+//                .maxWeightCapacity(18.0)
+//                .ageLimit(30)
+//                .typeOfStroller(TypeOfStroller.TWINS)
+//                .foldable(true)
+//                .build();
+//
+//
+//        productRepository.save(babyStroller1);
+//        productRepository.save(babyStroller2);
     }
 }
