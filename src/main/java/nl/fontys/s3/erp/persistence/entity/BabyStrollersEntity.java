@@ -4,6 +4,7 @@ package nl.fontys.s3.erp.persistence.entity;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
@@ -24,6 +25,7 @@ public class BabyStrollersEntity extends ProductEntity {
     private int ageLimit;
 
     @Enumerated(EnumType.STRING)
+    @NotNull
     @Column(name = "type_of_stroller", nullable = false)
     private TypeOfStroller typeOfStroller;
 

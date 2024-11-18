@@ -20,7 +20,7 @@ public class CreateBabyStrollerRequest extends CreateProductRequest{
     @NotNull
     private int ageLimit;
 
-    @NotBlank
+    @NotNull
     private TypeOfStroller typeOfStroller;
 
     @Builder.Default

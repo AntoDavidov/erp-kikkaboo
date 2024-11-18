@@ -18,7 +18,7 @@ public class UpdateBabyStrollerRequest extends UpdateProductRequest{
     @NotNull
     private int ageLimit;
 
-    @NotBlank
+    @NotNull
     private String typeOfStroller;
 
     @Builder.Default
