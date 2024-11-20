@@ -2,6 +2,7 @@ package nl.fontys.s3.erp.configuration.exceptionhandler;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
 import org.springframework.http.*;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
@@ -9,14 +10,13 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 @ControllerAdvice
 @Slf4j
@@ -32,6 +32,15 @@ public class RestCusotmerExceptionHandler extends ResponseEntityExceptionHandler
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(convertToProblemDetail(errors));
+    }
+
+    @ExceptionHandler(ProductExistsBySKU.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public ResponseEntity<Map<String, String>> handleProductExistsBySKU(ProductExistsBySKU ex) {
+        Map<String, String> errorResponse = new HashMap<>();
+        errorResponse.put("error", "ProductExistsBySKU");
+        errorResponse.put("message", ex.getMessage());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(value = {ConstraintViolationException.class})
