@@ -1,6 +1,5 @@
-package nl.fontys.s3.erp.business.DTOs.UserDTOs;
+package nl.fontys.s3.erp.business.DTOs.EmployeeDTOs;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -19,27 +18,19 @@ import java.util.Date;
 @Setter
 @Builder
 @AllArgsConstructor
-public class UpdateUserRequest {
-    private long userId;
+public class UpdateEmployeeRequest {
     @NotBlank
-    private String firstName;
-
-    @NotBlank
-    private String lastName;
-
-    @NotBlank
-    private String address;
-
-    @Email
-    @NotBlank
-    private String email;
-
-    @NotBlank
-    private String password;
-
-    @NotBlank
-    private String phone;
+    private String employeeCode;
 
     @NotNull
-    private Role role;
+    private LocalDate dateOfBirth;
+
+    @NotNull
+    private Status status;
+
+    @NotNull
+    private Department department;
+
+    @NotNull
+    private BigDecimal salary;
 }

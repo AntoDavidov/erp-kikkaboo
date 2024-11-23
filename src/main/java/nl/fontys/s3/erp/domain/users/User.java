@@ -16,15 +16,10 @@ import java.util.Date;
 @AllArgsConstructor
 public class User {
     private Long id;
-    private String firstName;
-    private String lastName;
-    private String address;
     private String email;
     private String password;
-    private String phone;
-    private Date dateOfBirth;
-    private Status status;
-    private Department department;
     private Role role;
-    private BigDecimal salary;
+
+    //just as if i am using inheritance, but instead i add an instance of the user class to all the subclasses
+    // here i put everything common fields
 }

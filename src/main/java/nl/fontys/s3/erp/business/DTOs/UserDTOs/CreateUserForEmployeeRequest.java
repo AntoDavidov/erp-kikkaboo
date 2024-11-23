@@ -1,25 +1,17 @@
 package nl.fontys.s3.erp.business.DTOs.UserDTOs;
 
-
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import lombok.*;
-import nl.fontys.s3.erp.domain.users.Department;
-import nl.fontys.s3.erp.domain.users.Role;
-import nl.fontys.s3.erp.domain.users.Status;
-
-import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.util.Date;
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CreateUserRequest {
+public class CreateUserForEmployeeRequest {
 
     @Email
     @NotBlank
@@ -28,7 +20,6 @@ public class CreateUserRequest {
     @NotBlank
     private String password;
 
-
     @NotNull
-    private Role role;
+    private Long employeeId;
 }
