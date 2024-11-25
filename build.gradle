@@ -51,6 +51,7 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+
 sonar{
     properties{
         property("sonar.projectKey", "sonar-erp")

@@ -3,10 +3,7 @@ package nl.fontys.s3.erp.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserRequest;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserResponse;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.GetUsersResponse;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.UpdateUserRequest;
+import nl.fontys.s3.erp.business.DTOs.UserDTOs.*;
 import nl.fontys.s3.erp.business.UserUseCases.*;
 import nl.fontys.s3.erp.domain.users.User;
 import org.springframework.http.HttpStatus;
@@ -19,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 public class UserController {
 //    private final CreateUserUseCase createUserUseCase;
+    private final CreateUserForEmployeeUseCase createUserForEmployeeUseCase;
     private final GetUserUseCase getUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
@@ -34,6 +32,12 @@ public class UserController {
 //        CreateUserResponse response = createUserUseCase.createUser(request);
 //        return ResponseEntity.status(HttpStatus.CREATED).body(response);
 //    }
+
+    @PostMapping()
+    public ResponseEntity<CreateUserForEmployeeResponse> createUser(@RequestBody @Valid CreateUserForEmployeeRequest request) {
+        CreateUserForEmployeeResponse response = createUserForEmployeeUseCase.createUserForEmployee(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {

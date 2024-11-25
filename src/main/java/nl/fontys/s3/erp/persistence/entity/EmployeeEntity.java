@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.Length;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "employee")
@@ -31,7 +32,7 @@ public class EmployeeEntity {
     private Long id;
 
     @NotBlank
-    @Column(name = "employee_code")
+    @Column(name = "employee_code", unique = true)
     private String employeeCode;
 
     @NotBlank
@@ -60,16 +61,17 @@ public class EmployeeEntity {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Enumerated(EnumType.STRING)
-    private Department department;
-
     @NotNull
     @Column(name = "salary", precision = 19, scale = 2)
     private BigDecimal salary;
 
-    @NotNull
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity user;
+    @ManyToMany()
+    @JoinTable(
+            name = "employee_department",
+            joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "department_id")
+    )
+    private Set<DepartmentEntity> departments;
+
 }
 

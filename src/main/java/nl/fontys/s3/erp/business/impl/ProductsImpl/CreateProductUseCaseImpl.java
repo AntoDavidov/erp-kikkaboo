@@ -25,7 +25,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
 
     @Override
     public CreateProductResponse createProduct(CreateProductRequest request) {
-        // Check if the request is for creating a BabyStroller
         if (request instanceof CreateBabyStrollerRequest) {
             if (productRepository.existsBySku(request.getSku())) {
                 throw new ProductExistsBySKU();

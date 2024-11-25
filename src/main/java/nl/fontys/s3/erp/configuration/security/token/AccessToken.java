@@ -7,7 +7,9 @@ public interface AccessToken {
 
     Long getEmployeeId();
 
-    Set<String> getRoles();
+    String getRole();
 
-    boolean hasRole(String roleName);
+    Set<String> getDepartments();
+
+
 }

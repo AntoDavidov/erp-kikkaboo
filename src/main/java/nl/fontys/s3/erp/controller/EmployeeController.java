@@ -26,7 +26,7 @@ public class EmployeeController {
     private final GetEmployeeUseCase getEmployeeUseCase;
 
     @GetMapping("{id}")
-    @RolesAllowed({"MANAGER", "CEO"})
+//    @RolesAllowed({"MANAGER", "CEO"})
     public ResponseEntity<Employee> getEmployee(@PathVariable(value = "id") final long id) {
         final Optional<Employee> employee = getEmployeeUseCase.getEmployee(id);
         if(employee.isEmpty()) {
@@ -36,13 +36,13 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @RolesAllowed({"CEO", "MANAGER"})
+//    @RolesAllowed({"CEO", "MANAGER"})
     public ResponseEntity<GetAllEmployeesResponse> getAllEmployees() {
         return ResponseEntity.ok(getAllEmployeeUseCase.getAllEmployees());
     }
 
     @PostMapping
-    @RolesAllowed({"CEO"})
+//    @RolesAllowed({"CEO"})
     public ResponseEntity<CreateEmployeeResponse> createEmployee(@RequestBody @Valid CreateEmployeeRequest request) {
         CreateEmployeeResponse response = createEmployeeUseCase.createEmployee(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

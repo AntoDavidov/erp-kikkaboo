@@ -5,18 +5,25 @@ import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeRequest;
 import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeResponse;
 import nl.fontys.s3.erp.business.EmployeeUseCases.CreateEmployeeUseCase;
 import nl.fontys.s3.erp.business.exceptions.EmployeeAlreadyExistsByCode;
+import nl.fontys.s3.erp.domain.users.Department;
+import nl.fontys.s3.erp.persistence.DepartmentRepository;
 import nl.fontys.s3.erp.persistence.EmployeeRepository;
+import nl.fontys.s3.erp.persistence.entity.DepartmentEntity;
 import nl.fontys.s3.erp.persistence.entity.EmployeeEntity;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
     private final EmployeeRepository employeeRepository;
+    private final DepartmentRepository departmentRepository;
 
     @Override
     public CreateEmployeeResponse createEmployee(CreateEmployeeRequest request) {
-        if(employeeRepository.existsByEmployeeCode(request.getEmployeeCode())) {
+        if (employeeRepository.existsByEmployeeCode(request.getEmployeeCode())) {
             throw new EmployeeAlreadyExistsByCode();
         }
         EmployeeEntity employeeEntity = saveNewEmployee(request);
@@ -27,10 +34,19 @@ public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
     }
 
     private EmployeeEntity saveNewEmployee(CreateEmployeeRequest request) {
+        Set<DepartmentEntity> departmentEntities = request.getDepartments()
+                .stream()
+                .map(department -> departmentRepository.findByName(department.name())) // Fetch existing department
+                .collect(Collectors.toSet());
+
+        if (departmentEntities.contains(null)) {
+            throw new IllegalArgumentException("One or more departments do not exist in the database");
+        }
+
         EmployeeEntity newEmployee = EmployeeEntity.builder()
                 .firstName(request.getFirstName())
                 .lastName(request.getLastName())
-                .department(request.getDepartment())
+                .departments(departmentEntities)
                 .employeeCode(request.getEmployeeCode())
                 .address(request.getAddress())
                 .phone(request.getPhone())
@@ -38,6 +54,15 @@ public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
                 .status(request.getStatus())
                 .salary(request.getSalary())
                 .build();
+
         return employeeRepository.save(newEmployee);
     }
+
+//    private DepartmentEntity mapEnumToExistingEntity(Department department) {
+//        // Construct DepartmentEntity with only the name (ID will be fetched automatically during persistence)
+//        return DepartmentEntity.builder()
+//                .name(department.name()) // Use the enum's name
+//                .build();
+//    }
 }
+

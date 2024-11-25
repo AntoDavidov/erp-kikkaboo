@@ -6,7 +6,7 @@ import lombok.*;
 import nl.fontys.s3.erp.domain.users.Role;
 
 @Entity
-@Table(name = "user_role")
+@Table(name = "roles")
 @Builder
 @Data
 @AllArgsConstructor
@@ -21,10 +21,4 @@ public class UserRoleEntity {
     @Column(name = "role_name")
     @Enumerated(EnumType.STRING)
     private Role role;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    @ToString.Exclude
-    @EqualsAndHashCode.Exclude
-    private UserEntity user;
 }

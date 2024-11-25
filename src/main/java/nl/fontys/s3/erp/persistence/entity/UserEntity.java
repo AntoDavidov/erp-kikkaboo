@@ -23,12 +23,12 @@ public class UserEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
+    @Column(name = "user_id")
     private Long id;
 
     @NotBlank
     @Length(min = 3, max = 50)
-    @Column(name = "email")
+    @Column(name = "email", unique = true)
     private String email;
 
     @NotBlank
@@ -37,11 +37,11 @@ public class UserEntity {
     private String password;
 
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private Set<UserRoleEntity> roles;
+    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    private UserRoleEntity role;
 
-//    @OneToOne(optional = true, cascade = CascadeType.ALL)
-//    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", nullable = true)
-//    private EmployeeEntity employee;
+    @OneToOne(optional = true, cascade = CascadeType.ALL)
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", nullable = true)
+    private EmployeeEntity employee;
 }

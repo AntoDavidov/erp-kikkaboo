@@ -17,10 +17,7 @@ import org.springframework.util.CollectionUtils;
 import java.security.Key;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, AccessTokenDecoder {
@@ -34,11 +31,17 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
     @Override
     public String encode(AccessToken accessToken) {
         Map<String, Object> claimsMap = new HashMap<>();
-        if (!CollectionUtils.isEmpty(accessToken.getRoles())) {
-            claimsMap.put("roles", accessToken.getRoles());
+//        if (!CollectionUtils.isEmpty(accessToken.getRoles())) {
+//            claimsMap.put("roles", accessToken.getRoles());
+//        }
+        if(accessToken.getRole() != null) {
+            claimsMap.put("role", accessToken.getRole());
         }
         if (accessToken.getEmployeeId() != null) {
             claimsMap.put("employeeId", accessToken.getEmployeeId());
+        }
+        if(!CollectionUtils.isEmpty(accessToken.getDepartments())) {
+            claimsMap.put("departments", accessToken.getDepartments());
         }
 
         Instant now = Instant.now();
@@ -58,12 +61,20 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
                     .parseClaimsJws(accessTokenEncoded);
             Claims claims = jwt.getBody();
 
-            List<String> roles = claims.get("roles", List.class);
+            String role = claims.get("role", String.class);
+            if (role != null) {
+                role = "UNKNOWN";
+            }
+
             Long employeeId = claims.get("employeeId", Long.class);
 
-            return new AccessTokenImpl(claims.getSubject(), employeeId, roles);
+
+            List<String> departments = claims.get("departments", List.class);
+
+
+            return new AccessTokenImpl(claims.getSubject(), employeeId, role, departments);
         } catch (JwtException e) {
-            throw new InvalidAccessTokenException(e.getMessage());
+            throw new InvalidAccessTokenException("Failed to decode access token:" + e.getMessage());
         }
     }
 }

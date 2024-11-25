@@ -5,6 +5,7 @@ package nl.fontys.s3.erp.configuration.security.token.impl;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
+import nl.fontys.s3.erp.domain.users.Department;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -15,16 +16,14 @@ import java.util.Set;
 public class AccessTokenImpl implements AccessToken {
     private final String subject;
     private final Long employeeId;
-    private final Set<String> roles;
+    private final String role;
+    private final Set<String> departments;
 
-    public AccessTokenImpl(String subject, Long employeeId, Collection<String> roles) {
+    public AccessTokenImpl(String subject, Long employeeId, String role, Collection<String> departments) {
         this.subject = subject;
         this.employeeId = employeeId;
-        this.roles = roles != null ? Set.copyOf(roles) : Collections.emptySet();
-    }
-
-    @Override
-    public boolean hasRole(String roleName) {
-        return this.roles.contains(roleName);
-    }
+        this.role = role;
+//        this.roles = roles != null ? Set.copyOf(roles) : Collections.emptySet();
+        this.departments = departments != null ? Set.copyOf(departments) : Collections.emptySet();
+        }
 }

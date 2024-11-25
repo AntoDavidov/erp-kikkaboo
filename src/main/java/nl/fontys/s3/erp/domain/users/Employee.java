@@ -5,6 +5,7 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -20,7 +21,6 @@ public class Employee {
     private String address;
     private String phone;
     private Status status;
-    private Department department;
+    private Set<Department> departments;
     private BigDecimal salary;
-    private User user;
 }

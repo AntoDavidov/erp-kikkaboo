@@ -19,7 +19,5 @@ public class User {
     private String email;
     private String password;
     private Role role;
-
-    //just as if i am using inheritance, but instead i add an instance of the user class to all the subclasses
-    // here i put everything common fields
+    private Employee employee;
 }

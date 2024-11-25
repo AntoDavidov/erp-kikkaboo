@@ -14,6 +14,7 @@ import nl.fontys.s3.erp.domain.users.Status;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @AllArgsConstructor
@@ -44,7 +45,7 @@ public class CreateEmployeeRequest {
     private Status status;
 
     @NotNull
-    private Department department;
+    private Set<Department> departments;
 
     @NotNull
     private BigDecimal salary;
