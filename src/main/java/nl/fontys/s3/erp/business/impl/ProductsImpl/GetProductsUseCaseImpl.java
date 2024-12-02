@@ -5,7 +5,9 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsResponse;
 import nl.fontys.s3.erp.business.ProductsUseCases.GetProductsUseCase;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.impl.converters.ProductConverter;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Product;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.ProductEntity;
@@ -18,9 +20,13 @@ import java.util.List;
 @AllArgsConstructor
 public class GetProductsUseCaseImpl implements GetProductsUseCase{
     private final ProductRepository productRepository;
+    private final AccessToken accessToken;
 
     @Override
     public GetAllProductsResponse getAllProducts(final GetAllProductsRequest request) {
+        if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("PRODUCT")) {
+            throw new PermissionDenied("get all products.");
+        }
         List<ProductEntity> results;
         if(StringUtils.hasText(request.getCompanyName())){
             results = productRepository.findAllByManufacturerName(request.getCompanyName());

@@ -1,6 +1,7 @@
 package nl.fontys.s3.erp.controller;
 
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.DTOs.UserDTOs.*;
@@ -9,6 +10,7 @@ import nl.fontys.s3.erp.domain.users.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -23,6 +25,7 @@ public class UserController {
 //    private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping()
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
     public ResponseEntity<GetUsersResponse> getUsers() {
         return ResponseEntity.ok(getAllUsersUseCase.getAllUsers());
     }
@@ -34,12 +37,14 @@ public class UserController {
 //    }
 
     @PostMapping()
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
     public ResponseEntity<CreateUserForEmployeeResponse> createUser(@RequestBody @Valid CreateUserForEmployeeRequest request) {
         CreateUserForEmployeeResponse response = createUserForEmployeeUseCase.createUserForEmployee(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         deleteUserUseCase.deleteUser(id);
 
@@ -47,6 +52,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
     public ResponseEntity<User> getUser(@PathVariable(value = "id") final long id) {
         final User user = getUserUseCase.getUser(id);
         if(user == null) {

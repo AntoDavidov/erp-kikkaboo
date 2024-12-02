@@ -56,7 +56,7 @@ public class LoginUseCaseImpl implements LoginUseCase {
                 .stream()
                 .map(DepartmentEntity::getName)
                 .toList();
-        String role = userEntity.getRole().toString();
+        String role = userEntity.getRole().getRole().toString();
 
         return accessTokenEncoder.encode(
                 new AccessTokenImpl(userEntity.getEmail(), employeeId, role, departments)

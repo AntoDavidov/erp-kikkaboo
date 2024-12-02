@@ -8,7 +8,9 @@ import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
@@ -22,9 +24,13 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
     private final ProductRepository productRepository;
     private final ManufacturerRepository manufacturerRepository;
     private final ManufacturerIdValidator manufacturerIdValidator;
+    private final AccessToken accessToken;
 
     @Override
     public CreateProductResponse createProduct(CreateProductRequest request) {
+        if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("PRODUCT")) {
+            throw new PermissionDenied("add a product.");
+        }
         if (request instanceof CreateBabyStrollerRequest) {
             if (productRepository.existsBySku(request.getSku())) {
                 throw new ProductExistsBySKU();

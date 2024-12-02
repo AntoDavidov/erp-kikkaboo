@@ -5,6 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class UserDoesNotExist extends ResponseStatusException {
   public UserDoesNotExist() {
-    super(HttpStatus.NOT_FOUND, "Product does not exist");
+    super(HttpStatus.NOT_FOUND, "User does not exist");
   }
 }

@@ -5,8 +5,10 @@ import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateBabyStrollerRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateProductRequest;
 import nl.fontys.s3.erp.business.ProductsUseCases.UpdateProductUseCase;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
@@ -19,9 +21,13 @@ import java.util.Optional;
 @AllArgsConstructor
 public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
     private final ProductRepository productRepository;
+    private final AccessToken accessToken;
 
     @Override
     public void updateProduct(UpdateProductRequest request) {
+        if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("PRODUCT")) {
+            throw new PermissionDenied("update a product.");
+        }
         ProductEntity productEntity = productRepository.findById(request.getId())
                 .orElseThrow(ProductDoesNotExist::new);
 

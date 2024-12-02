@@ -13,6 +13,7 @@ import nl.fontys.s3.erp.business.EmployeeUseCases.UpdateEmployeeUseCase;
 import nl.fontys.s3.erp.domain.users.Employee;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -26,7 +27,7 @@ public class EmployeeController {
     private final GetEmployeeUseCase getEmployeeUseCase;
 
     @GetMapping("{id}")
-//    @RolesAllowed({"MANAGER", "CEO"})
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
     public ResponseEntity<Employee> getEmployee(@PathVariable(value = "id") final long id) {
         final Optional<Employee> employee = getEmployeeUseCase.getEmployee(id);
         if(employee.isEmpty()) {
@@ -36,13 +37,13 @@ public class EmployeeController {
     }
 
     @GetMapping
-//    @RolesAllowed({"CEO", "MANAGER"})
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
     public ResponseEntity<GetAllEmployeesResponse> getAllEmployees() {
         return ResponseEntity.ok(getAllEmployeeUseCase.getAllEmployees());
     }
 
     @PostMapping
-//    @RolesAllowed({"CEO"})
+    @PreAuthorize("hasRole('CEO')")
     public ResponseEntity<CreateEmployeeResponse> createEmployee(@RequestBody @Valid CreateEmployeeRequest request) {
         CreateEmployeeResponse response = createEmployeeUseCase.createEmployee(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);

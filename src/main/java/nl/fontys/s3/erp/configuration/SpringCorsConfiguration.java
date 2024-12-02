@@ -11,11 +11,12 @@ public class SpringCorsConfiguration {
     //IMPORTANT!!! the @Value should be SpringBoot not Lombok
     @Bean
     public WebMvcConfigurer corsConfigurer(@Value("${cors.allowedOrigins}") String allowedOrigins) {
+        System.out.println("CORS Allowed Origins: " + allowedOrigins); // Debugging
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**")
-                        .allowedOrigins(allowedOrigins)
+                        .allowedOrigins(allowedOrigins.split(","))
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                         .allowedHeaders("*")
                         .allowCredentials(true);

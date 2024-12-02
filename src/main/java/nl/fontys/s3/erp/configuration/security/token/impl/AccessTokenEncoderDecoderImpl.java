@@ -60,19 +60,27 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
             Jwt<?, Claims> jwt = Jwts.parserBuilder().setSigningKey(key).build()
                     .parseClaimsJws(accessTokenEncoded);
             Claims claims = jwt.getBody();
+            System.out.println("Decoded JWT Claims: " + claims);
 
             String role = claims.get("role", String.class);
-            if (role != null) {
+            System.out.println("Decoded Role: " + role);
+
+            if (role == null) {
                 role = "UNKNOWN";
             }
 
             Long employeeId = claims.get("employeeId", Long.class);
+            System.out.println("Decoded Employee ID: " + employeeId);
 
 
             List<String> departments = claims.get("departments", List.class);
+            System.out.println("Decoded Departments: " + departments);
 
 
-            return new AccessTokenImpl(claims.getSubject(), employeeId, role, departments);
+            AccessToken token = new AccessTokenImpl(claims.getSubject(), employeeId, role, departments);
+            System.out.println("AccessToken Object: " + token);
+
+            return token;
         } catch (JwtException e) {
             throw new InvalidAccessTokenException("Failed to decode access token:" + e.getMessage());
         }

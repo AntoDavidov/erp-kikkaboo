@@ -1,10 +1,13 @@
 package nl.fontys.s3.erp.business.impl.AnnouncementsImpl;
 
 
+import jakarta.persistence.Access;
 import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.business.AnnouncementsUseCases.DeleteAnnouncementUseCase;
 import nl.fontys.s3.erp.business.exceptions.AnnouncementDoesNotExist;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.UserDoesNotExist;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.announcements.Announcement;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
 import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;
@@ -13,7 +16,8 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class DeleteAnnouncementUseCaseImpl implements DeleteAnnouncementUseCase {
-    public final AnnouncementRepository announcementRepository;
+    private final AnnouncementRepository announcementRepository;
+    private final AccessToken accessToken;
 
     @Override
     public void deleteAnnouncement(long id) {

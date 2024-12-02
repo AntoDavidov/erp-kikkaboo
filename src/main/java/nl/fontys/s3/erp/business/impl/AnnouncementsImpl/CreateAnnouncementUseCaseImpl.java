@@ -6,6 +6,7 @@ import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementRequest
 import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementResponse;
 import nl.fontys.s3.erp.business.exceptions.AnnouncementCannotBeEditedBySpecialist;
 import nl.fontys.s3.erp.business.impl.converters.UserConverter;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.users.Role;
 import nl.fontys.s3.erp.persistence.AnnouncementRepository;
 import nl.fontys.s3.erp.persistence.entity.AnnouncementEntity;

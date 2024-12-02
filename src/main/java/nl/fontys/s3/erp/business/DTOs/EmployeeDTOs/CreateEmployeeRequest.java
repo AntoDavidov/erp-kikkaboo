@@ -41,8 +41,8 @@ public class CreateEmployeeRequest {
     @NotNull
     private LocalDate dateOfBirth;
 
-    @NotNull
-    private Status status;
+//    @NotNull
+//    private Status status;
 
     @NotNull
     private Set<Department> departments;

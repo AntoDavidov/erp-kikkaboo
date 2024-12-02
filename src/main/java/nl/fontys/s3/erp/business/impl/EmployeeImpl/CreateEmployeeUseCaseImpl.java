@@ -5,7 +5,10 @@ import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeRequest;
 import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeResponse;
 import nl.fontys.s3.erp.business.EmployeeUseCases.CreateEmployeeUseCase;
 import nl.fontys.s3.erp.business.exceptions.EmployeeAlreadyExistsByCode;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.users.Department;
+import nl.fontys.s3.erp.domain.users.Status;
 import nl.fontys.s3.erp.persistence.DepartmentRepository;
 import nl.fontys.s3.erp.persistence.EmployeeRepository;
 import nl.fontys.s3.erp.persistence.entity.DepartmentEntity;
@@ -20,12 +23,17 @@ import java.util.stream.Collectors;
 public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
     private final EmployeeRepository employeeRepository;
     private final DepartmentRepository departmentRepository;
+    private final AccessToken accessToken;
 
     @Override
     public CreateEmployeeResponse createEmployee(CreateEmployeeRequest request) {
+        if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("ACCOUNTING")) {
+            throw new PermissionDenied("add an employee.");
+        }
         if (employeeRepository.existsByEmployeeCode(request.getEmployeeCode())) {
             throw new EmployeeAlreadyExistsByCode();
         }
+
         EmployeeEntity employeeEntity = saveNewEmployee(request);
 
         return CreateEmployeeResponse.builder()
@@ -36,7 +44,7 @@ public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
     private EmployeeEntity saveNewEmployee(CreateEmployeeRequest request) {
         Set<DepartmentEntity> departmentEntities = request.getDepartments()
                 .stream()
-                .map(department -> departmentRepository.findByName(department.name())) // Fetch existing department
+                .map(department -> departmentRepository.findByName(department.name()))
                 .collect(Collectors.toSet());
 
         if (departmentEntities.contains(null)) {
@@ -51,7 +59,7 @@ public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
                 .address(request.getAddress())
                 .phone(request.getPhone())
                 .dateOfBirth(request.getDateOfBirth())
-                .status(request.getStatus())
+                .status(Status.ACTIVE)
                 .salary(request.getSalary())
                 .build();
 

@@ -55,16 +55,29 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     }
 
     private void setupSpringSecurityContext(AccessToken accessToken) {
+        System.out.println("Raw Role from AccessToken: " + accessToken.getRole());
+
+        String authorityRole = SPRING_SECURITY_ROLE_PREFIX + accessToken.getRole();
+        System.out.println("Mapped Authority Role: " + authorityRole);
+
         UserDetails userDetails = new User(
                 accessToken.getSubject(),
                 "",
-                List.of(new SimpleGrantedAuthority(SPRING_SECURITY_ROLE_PREFIX + accessToken.getRole()))
+                List.of(new SimpleGrantedAuthority(authorityRole))
         );
+
+        System.out.println("UserDetails Authorities: " + userDetails.getAuthorities());
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
+
         usernamePasswordAuthenticationToken.setDetails(accessToken);
+
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
+
+        System.out.println("Final Security Context Authentication: " +
+                SecurityContextHolder.getContext().getAuthentication());
     }
+
 
 }

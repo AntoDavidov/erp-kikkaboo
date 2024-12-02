@@ -1,6 +1,7 @@
 package nl.fontys.s3.erp.configuration.security;
 
 import nl.fontys.s3.erp.configuration.security.auth.AuthenticationRequestFilter;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -12,8 +13,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.servlet.config.annotation.CorsRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+
 
 @EnableWebSecurity
 @EnableMethodSecurity(jsr250Enabled = true)
@@ -37,7 +38,11 @@ public class WebSecurityConfig {
                         configurer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(registry ->
                         registry.requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                                .requestMatchers(HttpMethod.POST, "/employees", "/tokens").permitAll()
+//                                .requestMatchers(HttpMethod.POST, "/users", "/tokens/**").permitAll()
+                                .requestMatchers(HttpMethod.POST, "/**").permitAll()
+                                .requestMatchers(HttpMethod.GET, "/**").permitAll()
+                                .requestMatchers(HttpMethod.PUT, "/**").permitAll()
+                                .requestMatchers(HttpMethod.DELETE, "/**").permitAll()
                                 .requestMatchers(SWAGGER_UI_RESOURCES).permitAll()
                                 .anyRequest().authenticated()
                 )

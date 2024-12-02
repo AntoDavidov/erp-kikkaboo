@@ -9,6 +9,7 @@ import nl.fontys.s3.erp.business.exceptions.UserAccountAlreadyExistsForEmployee;
 import nl.fontys.s3.erp.domain.users.Role;
 import nl.fontys.s3.erp.persistence.EmployeeRepository;
 import nl.fontys.s3.erp.persistence.UserRepository;
+import nl.fontys.s3.erp.persistence.UserRoleRepository;
 import nl.fontys.s3.erp.persistence.entity.EmployeeEntity;
 import nl.fontys.s3.erp.persistence.entity.UserEntity;
 import nl.fontys.s3.erp.persistence.entity.UserRoleEntity;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 public class CreateUserForEmployeeUseCaseImpl implements CreateUserForEmployeeUseCase {
     private final UserRepository userRepository;
     private final EmployeeRepository employeeRepository;
+    private final UserRoleRepository userRoleRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Override
@@ -54,9 +56,9 @@ public class CreateUserForEmployeeUseCaseImpl implements CreateUserForEmployeeUs
     }
 
     private UserRoleEntity mapRolesToEntities(Role role) {
-        return UserRoleEntity.builder()
-                .role(role)
-                .build();
-
+        return userRoleRepository.findRoleByName(role)
+                .orElseGet(() -> UserRoleEntity.builder()
+                        .role(role)
+                        .build());
     }
 }
