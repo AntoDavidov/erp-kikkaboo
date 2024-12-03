@@ -5,8 +5,11 @@ import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
 import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
+import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
 import nl.fontys.s3.erp.business.impl.ProductsImpl.CreateProductUseCaseImpl;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
@@ -19,9 +22,10 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Optional;
+import java.util.Set;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,63 +40,108 @@ public class CreateProductUCImplTest {
     @Mock
     private ManufacturerIdValidator manufacturerIdValidator;
 
+    @Mock
+    private AccessToken accessToken;
+
     @InjectMocks
     private CreateProductUseCaseImpl createProductUseCase;
 
     @Test
-    void createBabyStroller_HappyFlow() {
+    void createProduct_throwsPermissionDenied_whenDepartmentsNull() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(null);
+        CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
+                .sku("12345678")
+                .build();
+
+        // Act & Assert
+        assertThrows(PermissionDenied.class, () -> createProductUseCase.createProduct(request));
+
+        // Verify: No interactions with repositories
+        verifyNoInteractions(productRepository, manufacturerRepository);
+    }
+
+    @Test
+    void createProduct_throwsProductExistsBySKU_whenSkuAlreadyExists() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+        when(productRepository.existsBySku("12345678")).thenReturn(true);
+
+        CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
+                .sku("12345678")
+                .build();
+
+        // Act & Assert
+        assertThrows(ProductExistsBySKU.class, () -> createProductUseCase.createProduct(request));
+
+        // Verify: No further repository interactions
+        verify(productRepository, never()).save(any());
+    }
+
+
+    @Test
+    void createProduct_throwsManufacturerDoesNotExist_whenManufacturerNotFound() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+        when(productRepository.existsBySku("12345678")).thenReturn(false);
+        when(manufacturerRepository.findById(1L)).thenReturn(Optional.empty());
+
+        CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
+                .sku("12345678")
+                .ManufacturerId(1L)
+                .build();
+
+        // Act & Assert
+        assertThrows(ManufacturerDoesNotExist.class, () -> createProductUseCase.createProduct(request));
+
+        // Verify: Manufacturer validation is performed
+        verify(manufacturerIdValidator).validateManufacturerId(1L);
+        verify(productRepository, never()).save(any());
+    }
+    @Test
+    void createProduct_savesSuccessfully_whenValidRequest() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+        when(productRepository.existsBySku("12345678")).thenReturn(false);
+
         ManufacturerEntity manufacturer = ManufacturerEntity.builder()
                 .id(1L)
                 .companyName("KikkaBoo")
                 .build();
 
+        when(manufacturerRepository.findById(1L)).thenReturn(Optional.of(manufacturer));
+
         CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
                 .sku("12345678")
-                .name("Baby Stroller")
+                .name("Comfy Stroller")
                 .shortName("Stroller")
-                .description("High quality baby stroller")
-                .costPrice(BigDecimal.valueOf(100.0))
-                .recommendedRetailPrice(BigDecimal.valueOf(200.0))
-                .wholeSalePrice(BigDecimal.valueOf(150.0))
-                .weight(BigDecimal.valueOf(10))
+                .description("A comfortable stroller")
+                .costPrice(BigDecimal.valueOf(100.00))
                 .ManufacturerId(1L)
-                .maxWeightCapacity(20)
-                .ageLimit(2)
+                .weight(BigDecimal.valueOf(5.5))
+                .imageURL("image.jpg")
+                .maxWeightCapacity(15.0)
+                .ageLimit(3)
                 .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
                 .foldable(true)
                 .build();
 
-        when(productRepository.existsBySku("12345678")).thenReturn(false);
-        when(manufacturerRepository.findById(1L)).thenReturn(java.util.Optional.of(manufacturer));
-        when(productRepository.save(any(BabyStrollersEntity.class))).thenAnswer(invocation -> invocation.getArgument(0));
-
-        doNothing().when(manufacturerIdValidator).validateManufacturerId(1L);
-
-        CreateProductResponse response = createProductUseCase.createProduct(request);
-
-        assertEquals("12345678", request.getSku());
-        verify(productRepository).save(any(BabyStrollersEntity.class));
-    }
-
-    @Test
-    void createBabyStroller_ProductExistsBySKU_UnhappyFlow() {
-        CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
+        BabyStrollersEntity savedEntity = BabyStrollersEntity.builder()
+                .productId(1L)
                 .sku("12345678")
-                .name("Baby Stroller")
-                .ManufacturerId(1L)
                 .build();
 
-        when(productRepository.existsBySku("12345678")).thenReturn(true);
+        when(productRepository.save(any(BabyStrollersEntity.class))).thenReturn(savedEntity);
 
-        assertThrows(ProductExistsBySKU.class, () -> createProductUseCase.createProduct(request));
-        verify(productRepository, never()).save(any(BabyStrollersEntity.class));
-    }
+        // Act
+        CreateProductResponse response = createProductUseCase.createProduct(request);
 
-    @Test
-    void createUnsupportedProductType_UnhappyFlow() {
-        CreateProductRequest unsupportedRequest = mock(CreateProductRequest.class);
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getProductId());
 
-        assertThrows(IllegalArgumentException.class, () -> createProductUseCase.createProduct(unsupportedRequest));
-        verify(productRepository, never()).save(any());
+        // Verify: Manufacturer validation and product save
+        verify(manufacturerIdValidator).validateManufacturerId(1L);
+        verify(productRepository).save(any(BabyStrollersEntity.class));
     }
 }

@@ -2,12 +2,18 @@ package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
 
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsRequest;
 import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsResponse;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.impl.ProductsImpl.GetProductsUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.converters.ProductConverter;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
+import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.Product;
+import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
+import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,10 +21,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.util.Collections;
 import java.util.List;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GetProductsUCImplTest {
@@ -27,96 +35,148 @@ public class GetProductsUCImplTest {
     private ProductRepository productRepository;
 
     @Mock
-    private ManufacturerRepository manufacturerRepository;
+    private AccessToken accessToken;
 
     @InjectMocks
-    private GetProductsUseCaseImpl getProductsUseCaseImpl;
+    private GetProductsUseCaseImpl getProductsUseCase;
 
     @Test
-    void getAllProducts_ByManufacturerName_HappyFlow() {
+    void getAllProducts_throwsPermissionDenied_whenDepartmentsNull() {
         // Arrange
-        GetAllProductsRequest request = new GetAllProductsRequest();
-        request.setCompanyName("KikkaBoo");
+        when(accessToken.getDepartments()).thenReturn(null);
+        GetAllProductsRequest request = new GetAllProductsRequest(null);
 
-        ManufacturerEntity manufacturer = ManufacturerEntity.builder()
-                .companyName("KikkaBoo")
-                .city("Sofia")
-                .build();
+        // Act & Assert
+        assertThrows(PermissionDenied.class, () -> getProductsUseCase.getAllProducts(request));
 
-        BabyStrollersEntity product1 = BabyStrollersEntity.builder()
-                .sku("12345678")
-                .name("BabyStroller 1")
-                .costPrice(BigDecimal.valueOf(100.0))
-                .wholeSalePrice(BigDecimal.valueOf(110.0))
-                .recommendedRetailPrice(BigDecimal.valueOf(180.0))
-                .manufacturer(manufacturer)
-                .build();
-
-        when(productRepository.findAllByManufacturerName("KikkaBoo")).thenReturn(List.of(product1));
-
-        // Act
-        GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts();
-
-        // Assert
-        assertEquals(1, productList.size());
-        assertEquals("BabyStroller 1", productList.get(0).getName());
-        verify(productRepository).findAllByManufacturerName("KikkaBoo");
+        // Verify: No repository interactions
+        verifyNoInteractions(productRepository);
     }
 
     @Test
-    void getAllProducts_NoManufacturerName_HappyFlow() {
+    void getAllProducts_returnsEmptyList_whenNoProductsFound() {
         // Arrange
-        GetAllProductsRequest request = new GetAllProductsRequest();
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+        when(productRepository.findAll()).thenReturn(Collections.emptyList());
 
-        ManufacturerEntity manufacturer = ManufacturerEntity.builder()
+        GetAllProductsRequest request = new GetAllProductsRequest(null);
+
+        // Act
+        GetAllProductsResponse response = getProductsUseCase.getAllProducts(request);
+
+        // Assert
+        assertNotNull(response);
+        assertTrue(response.getProducts().isEmpty());
+
+        // Verify: Repository interactions
+        verify(productRepository).findAll();
+    }
+
+    @Test
+    void getAllProducts_returnsAllProducts_whenNoFilterProvided() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+
+        ManufacturerEntity manufacturer1 = ManufacturerEntity.builder()
+                .id(1L)
                 .companyName("KikkaBoo")
-                .city("Sofia")
+                .city("city")
+                .country(Country.BULGARIA)
                 .build();
 
-        BabyStrollersEntity product1 = BabyStrollersEntity.builder()
+        ProductEntity productEntity1 = BabyStrollersEntity.builder()
+                .productId(1L)
                 .sku("12345678")
-                .name("BabyStroller 1")
-                .costPrice(BigDecimal.valueOf(100.0))
-                .wholeSalePrice(BigDecimal.valueOf(110.0))
-                .recommendedRetailPrice(BigDecimal.valueOf(180.0))
-                .manufacturer(manufacturer)
+                .name("Product 1")
+                .shortName("P1")
+                .manufacturer(manufacturer1)
+                .description("Test description 1")
+                .costPrice(BigDecimal.valueOf(100.00))
+                .weight(BigDecimal.valueOf(5.5))
+                .imageUrl("image.jpg")
+                .maxWeightCapacity(15.0)
+                .ageLimit(3)
+                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
+                .foldable(true)
                 .build();
 
-        BabyStrollersEntity product2 = BabyStrollersEntity.builder()
+        ProductEntity productEntity2 = BabyStrollersEntity.builder()
+                .productId(2L)
                 .sku("87654321")
-                .name("BabyStroller 2")
-                .costPrice(BigDecimal.valueOf(120.00))
-                .wholeSalePrice(BigDecimal.valueOf(130.0))
-                .recommendedRetailPrice(BigDecimal.valueOf(200.0))
-                .manufacturer(manufacturer)
+                .name("Product 2")
+                .shortName("P2")
+                .manufacturer(manufacturer1)
+                .description("Test description 2")
+                .costPrice(BigDecimal.valueOf(200.00))
+                .weight(BigDecimal.valueOf(3.5))
+                .imageUrl("image.jpg")
+                .maxWeightCapacity(15.0)
+                .ageLimit(3)
+                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
+                .foldable(true)
                 .build();
 
-        when(productRepository.findAll()).thenReturn(List.of(product1, product2));
+        List<ProductEntity> entities = List.of(productEntity1, productEntity2);
+
+        when(productRepository.findAll()).thenReturn(entities);
+
+        GetAllProductsRequest request = new GetAllProductsRequest(null);
 
         // Act
-        GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts();
+        GetAllProductsResponse response = getProductsUseCase.getAllProducts(request);
 
         // Assert
-        assertEquals(2, productList.size());
-        assertEquals("BabyStroller 1", productList.get(0).getName());
-        assertEquals("BabyStroller 2", productList.get(1).getName());
+        assertNotNull(response);
+        assertEquals(2, response.getProducts().size());
+        assertEquals(ProductConverter.convert(productEntity1), response.getProducts().get(0));
+        assertEquals(ProductConverter.convert(productEntity2), response.getProducts().get(1));
+
+        // Verify: Repository interactions
         verify(productRepository).findAll();
     }
-
     @Test
-    void getAllProducts_NoProducts_UnhappyFlow() {
+    void getAllProducts_filtersProductsByManufacturerName() {
         // Arrange
-        GetAllProductsRequest request = new GetAllProductsRequest();
-        when(productRepository.findAll()).thenReturn(List.of());
+        when(accessToken.getDepartments()).thenReturn(Set.of("PRODUCT"));
+
+        ManufacturerEntity manufacturer1 = ManufacturerEntity.builder()
+                .id(1L)
+                .companyName("KikkaBoo")
+                .city("city")
+                .country(Country.BULGARIA)
+                .build();
+
+        ProductEntity productEntity = BabyStrollersEntity.builder()
+                .productId(2L)
+                .sku("87654321")
+                .name("Product 2")
+                .shortName("P2")
+                .manufacturer(manufacturer1)
+                .description("Test description 2")
+                .costPrice(BigDecimal.valueOf(200.00))
+                .weight(BigDecimal.valueOf(3.5))
+                .imageUrl("image.jpg")
+                .maxWeightCapacity(15.0)
+                .ageLimit(3)
+                .typeOfStroller(TypeOfStroller.THREE_IN_ONE)
+                .foldable(true)
+                .build();
+
+        List<ProductEntity> entities = List.of(productEntity);
+
+        when(productRepository.findAllByManufacturerName("KikkaBoo")).thenReturn(entities);
+
+        GetAllProductsRequest request = new GetAllProductsRequest("KikkaBoo");
 
         // Act
-        GetAllProductsResponse response = getProductsUseCaseImpl.getAllProducts(request);
-        List<Product> productList = response.getProducts();
+        GetAllProductsResponse response = getProductsUseCase.getAllProducts(request);
 
         // Assert
-        assertEquals(0, productList.size());
-        verify(productRepository).findAll();
+        assertNotNull(response);
+        assertEquals(1, response.getProducts().size());
+        assertEquals(ProductConverter.convert(productEntity), response.getProducts().get(0));
+
+        // Verify: Repository interactions
+        verify(productRepository).findAllByManufacturerName("KikkaBoo");
     }
 }

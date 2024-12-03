@@ -77,6 +77,9 @@ public abstract class ProductEntity {
 
 
     public void calculatePrices() {
+        if (this.costPrice == null) {
+            throw new IllegalStateException("Cost price cannot be null when calculating prices.");
+        }
         if (this.wholeSalePrice == null) {
             this.wholeSalePrice = this.costPrice.multiply(BigDecimal.valueOf(1.10));
         }

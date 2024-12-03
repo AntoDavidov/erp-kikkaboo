@@ -3,6 +3,7 @@ package nl.fontys.s3.erp.domain.products;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
+import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 
 import java.math.BigDecimal;
 
@@ -23,6 +24,29 @@ public abstract class Product {
     private BigDecimal weight; //kg
     private Manufacturer manufacturer;
     private String imageUrl;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Product product = (Product) o;
+
+        if (!productId.equals(product.productId)) return false;
+        if (!sku.equals(product.sku)) return false;
+        if (!name.equals(product.name)) return false;
+        return manufacturer != null ? manufacturer.equals(product.manufacturer) : product.manufacturer == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = productId.hashCode();
+        result = 31 * result + sku.hashCode();
+        result = 31 * result + name.hashCode();
+        result = 31 * result + (manufacturer != null ? manufacturer.hashCode() : 0);
+        return result;
+    }
+
+
 //    private String weightClassification; computed properties
 
 //    public String getWeightClassification(){

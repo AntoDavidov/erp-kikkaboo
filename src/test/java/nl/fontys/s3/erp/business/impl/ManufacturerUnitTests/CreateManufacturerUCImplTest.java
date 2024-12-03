@@ -3,18 +3,24 @@ package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerRequest;
 import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerResponse;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerAlreadyExists;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.impl.ManufacturersImpl.CreateManufacturerUseCaseImpl;
+import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import java.util.Set;
+
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -23,39 +29,92 @@ public class CreateManufacturerUCImplTest {
     @Mock
     private ManufacturerRepository manufacturerRepository;
 
+    @Mock
+    private AccessToken accessToken;
+
     @InjectMocks
     private CreateManufacturerUseCaseImpl createManufacturerUseCase;
 
     @Test
-    void createManufacturer_HappyFlow() {
-        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "KikkaBoo", "Sofia");
+    void createManufacturer_throwsPermissionDenied_whenDepartmentsNull() {
+        // Arrange: No need to stub repository calls since the execution halts before they are called
+        when(accessToken.getDepartments()).thenReturn(null);
 
-        ManufacturerEntity manufacturerEntity = ManufacturerEntity.builder()
-                .companyName("KikkaBoo")
+        CreateManufacturerRequest request = CreateManufacturerRequest.builder()
+                .companyName("Test Company")
+                .city("Test City")
                 .country(Country.BULGARIA)
-                .city("Sofia")
                 .build();
 
-        when(manufacturerRepository.existsByCompanyNameCustom(anyString())).thenReturn(false);  // Use anyString() for flexibility
-        when(manufacturerRepository.save(any(ManufacturerEntity.class))).thenReturn(manufacturerEntity);
+        // Act & Assert
+        assertThrows(PermissionDenied.class,
+                () -> createManufacturerUseCase.createManufacturer(request));
 
-        CreateManufacturerResponse response = createManufacturerUseCase.createManufacturer(request);
+        // Verify: Ensure no unnecessary interactions with manufacturerRepository
+        verifyNoInteractions(manufacturerRepository);
+    }
 
-        assertEquals("KikkaBoo", manufacturerEntity.getCompanyName());
-        verify(manufacturerRepository).existsByCompanyNameCustom("KikkaBoo");
-        verify(manufacturerRepository).save(any(ManufacturerEntity.class));
+
+    @Test
+    void createManufacturer_throwsPermissionDenied_whenTradeDepartmentMissing() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("SALES"));
+        CreateManufacturerRequest request = CreateManufacturerRequest.builder()
+                .companyName("Test Company")
+                .city("Test City")
+                .country(Country.CHINA)
+                .build();
+
+        // Act & Assert
+        assertThrows(PermissionDenied.class,
+                () -> createManufacturerUseCase.createManufacturer(request));
+        verify(manufacturerRepository, never()).existsByCompanyNameCustom(any());
     }
 
     @Test
-    void createManufacturer_AlreadyExists_UnhappyFlow() {
-        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "KikkaBoo", "Sofia");
-        when(manufacturerRepository.existsByCompanyNameCustom(anyString())).thenReturn(true);  // Use anyString() for flexibility
+    void createManufacturer_throwsManufacturerAlreadyExists_whenCompanyNameExists() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("TRADE"));
+        when(manufacturerRepository.existsByCompanyNameCustom("Test Company")).thenReturn(true);
+        CreateManufacturerRequest request = CreateManufacturerRequest.builder()
+                .companyName("Test Company")
+                .city("Test City")
+                .country(Country.CHINA)
+                .build();
 
-        assertThrows(ManufacturerAlreadyExists.class, () -> {
-            createManufacturerUseCase.createManufacturer(request);
-        });
+        // Act & Assert
+        assertThrows(ManufacturerAlreadyExists.class,
+                () -> createManufacturerUseCase.createManufacturer(request));
+        verify(manufacturerRepository, never()).save(any());
+    }
 
-        verify(manufacturerRepository).existsByCompanyNameCustom("KikkaBoo");
-        verify(manufacturerRepository, never()).save(any(ManufacturerEntity.class));
+    @Test
+    void createManufacturer_savesAndReturnsResponse_whenValidRequest() {
+        // Arrange
+        when(accessToken.getDepartments()).thenReturn(Set.of("TRADE"));
+        when(manufacturerRepository.existsByCompanyNameCustom("Test Company")).thenReturn(false);
+
+        ManufacturerEntity savedEntity = ManufacturerEntity.builder()
+                .id(1L)
+                .companyName("Test Company")
+                .city("Test City")
+                .country(Country.BULGARIA)
+                .build();
+
+        when(manufacturerRepository.save(any(ManufacturerEntity.class))).thenReturn(savedEntity);
+
+        CreateManufacturerRequest request = CreateManufacturerRequest.builder()
+                .companyName("Test Company")
+                .city("Test City")
+                .country(Country.BULGARIA)
+                .build();
+
+        // Act
+        CreateManufacturerResponse response = createManufacturerUseCase.createManufacturer(request);
+
+        // Assert
+        assertNotNull(response);
+        assertEquals(1L, response.getManufacturerId());
+        verify(manufacturerRepository).save(any(ManufacturerEntity.class));
     }
 }
