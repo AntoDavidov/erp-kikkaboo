@@ -1,7 +1,7 @@
 package nl.fontys.s3.erp.business.impl.EmployeeUnitTests;
 
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.EmployeeImpl.GetEmployeeUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.employeeimpl.GetEmployeeUseCaseImpl;
 import nl.fontys.s3.erp.business.impl.converters.EmployeeConverter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.users.Employee;

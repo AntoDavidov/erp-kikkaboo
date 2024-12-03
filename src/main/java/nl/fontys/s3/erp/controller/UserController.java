@@ -1,14 +1,12 @@
 package nl.fontys.s3.erp.controller;
 
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.*;
-import nl.fontys.s3.erp.business.UserUseCases.*;
+import nl.fontys.s3.erp.business.dtos.userdto.*;
+import nl.fontys.s3.erp.business.userusecases.*;
 import nl.fontys.s3.erp.domain.users.User;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;

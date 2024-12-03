@@ -1,13 +1,12 @@
 package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateBabyStrollerRequest;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.UpdateProductRequest;
+import nl.fontys.s3.erp.business.dtos.productdto.UpdateBabyStrollerRequest;
+import nl.fontys.s3.erp.business.dtos.productdto.UpdateProductRequest;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
-import nl.fontys.s3.erp.business.impl.ProductsImpl.UpdateProductUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.productsimpl.UpdateProductUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
-import nl.fontys.s3.erp.domain.products.BabyStrollers;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 import nl.fontys.s3.erp.persistence.ProductRepository;

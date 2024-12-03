@@ -1,11 +1,10 @@
 package nl.fontys.s3.erp.controller;
 
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.*;
-import nl.fontys.s3.erp.business.ProductsUseCases.*;
+import nl.fontys.s3.erp.business.dtos.productdto.*;
+import nl.fontys.s3.erp.business.productsusecases.*;
 import nl.fontys.s3.erp.domain.products.Product;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

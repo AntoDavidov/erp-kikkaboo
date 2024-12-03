@@ -1,8 +1,8 @@
 package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.GetManufacturersResponse;
+import nl.fontys.s3.erp.business.dtos.manufacturerdto.GetManufacturersResponse;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.ManufacturersImpl.GetManufacturersUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.manufacturersimpl.GetManufacturersUseCaseImpl;
 import nl.fontys.s3.erp.business.impl.converters.ManufacturerConverter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;

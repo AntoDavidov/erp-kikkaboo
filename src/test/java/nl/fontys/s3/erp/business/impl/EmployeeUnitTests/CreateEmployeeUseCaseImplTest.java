@@ -1,10 +1,10 @@
 package nl.fontys.s3.erp.business.impl.EmployeeUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeRequest;
-import nl.fontys.s3.erp.business.DTOs.EmployeeDTOs.CreateEmployeeResponse;
+import nl.fontys.s3.erp.business.dtos.employeedto.CreateEmployeeRequest;
+import nl.fontys.s3.erp.business.dtos.employeedto.CreateEmployeeResponse;
 import nl.fontys.s3.erp.business.exceptions.EmployeeAlreadyExistsByCode;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.EmployeeImpl.CreateEmployeeUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.employeeimpl.CreateEmployeeUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.users.Department;
 import nl.fontys.s3.erp.domain.users.Status;

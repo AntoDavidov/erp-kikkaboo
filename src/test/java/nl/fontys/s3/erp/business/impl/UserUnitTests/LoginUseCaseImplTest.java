@@ -1,10 +1,10 @@
 package nl.fontys.s3.erp.business.impl.UserUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.LoginRequest;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.LoginResponse;
+import nl.fontys.s3.erp.business.dtos.userdto.LoginRequest;
+import nl.fontys.s3.erp.business.dtos.userdto.LoginResponse;
 import nl.fontys.s3.erp.business.exceptions.EmployeeDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.InvalidCredentials;
-import nl.fontys.s3.erp.business.impl.UserImpl.LoginUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.userimpl.LoginUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessTokenEncoder;
 import nl.fontys.s3.erp.configuration.security.token.impl.AccessTokenImpl;
 import nl.fontys.s3.erp.domain.users.Role;

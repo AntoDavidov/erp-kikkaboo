@@ -2,11 +2,9 @@ package nl.fontys.s3.erp.controller;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.LoginRequest;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.LoginResponse;
-import nl.fontys.s3.erp.business.UserUseCases.LoginUseCase;
-import org.apache.coyote.Response;
-import org.springframework.http.HttpEntity;
+import nl.fontys.s3.erp.business.dtos.userdto.LoginRequest;
+import nl.fontys.s3.erp.business.dtos.userdto.LoginResponse;
+import nl.fontys.s3.erp.business.userusecases.LoginUseCase;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;

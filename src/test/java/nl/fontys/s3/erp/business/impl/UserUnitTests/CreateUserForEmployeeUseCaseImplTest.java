@@ -1,10 +1,10 @@
 package nl.fontys.s3.erp.business.impl.UserUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserForEmployeeRequest;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserForEmployeeResponse;
+import nl.fontys.s3.erp.business.dtos.userdto.CreateUserForEmployeeRequest;
+import nl.fontys.s3.erp.business.dtos.userdto.CreateUserForEmployeeResponse;
 import nl.fontys.s3.erp.business.exceptions.EmployeeDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.UserAccountAlreadyExistsForEmployee;
-import nl.fontys.s3.erp.business.impl.UserImpl.CreateUserForEmployeeUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.userimpl.CreateUserForEmployeeUseCaseImpl;
 import nl.fontys.s3.erp.domain.users.Role;
 import nl.fontys.s3.erp.persistence.EmployeeRepository;
 import nl.fontys.s3.erp.persistence.UserRepository;

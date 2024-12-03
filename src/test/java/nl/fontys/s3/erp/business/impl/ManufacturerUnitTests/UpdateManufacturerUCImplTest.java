@@ -1,9 +1,9 @@
 package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.UpdateManufacturerRequest;
+import nl.fontys.s3.erp.business.dtos.manufacturerdto.UpdateManufacturerRequest;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.ManufacturersImpl.UpdateManufacturerUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.manufacturersimpl.UpdateManufacturerUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;

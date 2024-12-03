@@ -1,15 +1,13 @@
 package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsRequest;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.GetAllProductsResponse;
+import nl.fontys.s3.erp.business.dtos.productdto.GetAllProductsRequest;
+import nl.fontys.s3.erp.business.dtos.productdto.GetAllProductsResponse;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.ProductsImpl.GetProductsUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.productsimpl.GetProductsUseCaseImpl;
 import nl.fontys.s3.erp.business.impl.converters.ProductConverter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
-import nl.fontys.s3.erp.domain.products.Product;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
-import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;

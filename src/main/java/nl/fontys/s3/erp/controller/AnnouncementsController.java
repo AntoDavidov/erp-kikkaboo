@@ -1,14 +1,13 @@
 package nl.fontys.s3.erp.controller;
 
 
-import jakarta.annotation.security.RolesAllowed;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.AnnouncementsUseCases.*;
-import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementRequest;
-import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.CreateAnnouncementResponse;
-import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.GetAnnouncementsResponse;
-import nl.fontys.s3.erp.business.DTOs.AnnouncementDTOs.UpdateAnnouncementRequest;
+import nl.fontys.s3.erp.business.announcementsusecases.*;
+import nl.fontys.s3.erp.business.dtos.announcementdto.CreateAnnouncementRequest;
+import nl.fontys.s3.erp.business.dtos.announcementdto.CreateAnnouncementResponse;
+import nl.fontys.s3.erp.business.dtos.announcementdto.GetAnnouncementsResponse;
+import nl.fontys.s3.erp.business.dtos.announcementdto.UpdateAnnouncementRequest;
 import nl.fontys.s3.erp.domain.announcements.Announcement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

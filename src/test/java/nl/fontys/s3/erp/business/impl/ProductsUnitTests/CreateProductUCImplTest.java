@@ -1,14 +1,12 @@
 package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerRequest;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateBabyStrollerRequest;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductRequest;
-import nl.fontys.s3.erp.business.DTOs.ProductDTOs.CreateProductResponse;
-import nl.fontys.s3.erp.business.ManufacturerUseCases.ManufacturerIdValidator;
+import nl.fontys.s3.erp.business.dtos.productdto.CreateBabyStrollerRequest;
+import nl.fontys.s3.erp.business.dtos.productdto.CreateProductResponse;
+import nl.fontys.s3.erp.business.manufacturerusecases.ManufacturerIdValidator;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
-import nl.fontys.s3.erp.business.impl.ProductsImpl.CreateProductUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.productsimpl.CreateProductUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;

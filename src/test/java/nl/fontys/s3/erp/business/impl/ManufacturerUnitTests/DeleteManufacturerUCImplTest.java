@@ -2,7 +2,7 @@ package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.ManufacturersImpl.DeleteManufacturerUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.manufacturersimpl.DeleteManufacturerUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import org.junit.jupiter.api.Test;

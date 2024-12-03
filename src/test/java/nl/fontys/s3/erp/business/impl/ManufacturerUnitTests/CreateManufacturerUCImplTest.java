@@ -1,21 +1,18 @@
 package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
 
-import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerRequest;
-import nl.fontys.s3.erp.business.DTOs.ManufacturerDTOs.CreateManufacturerResponse;
+import nl.fontys.s3.erp.business.dtos.manufacturerdto.CreateManufacturerRequest;
+import nl.fontys.s3.erp.business.dtos.manufacturerdto.CreateManufacturerResponse;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerAlreadyExists;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
-import nl.fontys.s3.erp.business.impl.ManufacturersImpl.CreateManufacturerUseCaseImpl;
+import nl.fontys.s3.erp.business.impl.manufacturersimpl.CreateManufacturerUseCaseImpl;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Set;
