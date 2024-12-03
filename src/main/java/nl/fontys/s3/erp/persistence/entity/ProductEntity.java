@@ -7,12 +7,10 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import nl.fontys.s3.erp.domain.products.Product;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.Optional;
 
 @Entity
 @Table(name = "product")

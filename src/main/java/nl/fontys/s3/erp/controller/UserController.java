@@ -15,24 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
-//    private final CreateUserUseCase createUserUseCase;
     private final CreateUserForEmployeeUseCase createUserForEmployeeUseCase;
     private final GetUserUseCase getUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
-//    private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping()
     @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
     public ResponseEntity<GetUsersResponse> getUsers() {
         return ResponseEntity.ok(getAllUsersUseCase.getAllUsers());
     }
-
-//    @PostMapping()
-//    public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
-//        CreateUserResponse response = createUserUseCase.createUser(request);
-//        return ResponseEntity.status(HttpStatus.CREATED).body(response);
-//    }
 
     @PostMapping()
     @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
@@ -59,12 +51,4 @@ public class UserController {
 
         return ResponseEntity.ok().body(user);
     }
-
-//    @PutMapping("{id}")
-//    public ResponseEntity<Void> updateUser(@PathVariable(value = "id") final long id, @RequestBody @Valid UpdateUserRequest request) {
-//        request.setUserId(id);
-//        updateUserUseCase.updateUser(request);
-//        return ResponseEntity.noContent().build();
-//    }
-
 }

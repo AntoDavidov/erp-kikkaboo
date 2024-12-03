@@ -1,7 +1,6 @@
 package nl.fontys.s3.erp.configuration.security;
 
 import nl.fontys.s3.erp.configuration.security.auth.AuthenticationRequestFilter;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;

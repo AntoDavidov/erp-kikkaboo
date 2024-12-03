@@ -26,7 +26,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class GetProductUCImplTest {
+class GetProductUCImplTest {
 
     @Mock
     private ProductRepository productRepository;

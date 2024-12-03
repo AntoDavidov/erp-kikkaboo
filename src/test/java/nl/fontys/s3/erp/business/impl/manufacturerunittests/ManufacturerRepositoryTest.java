@@ -12,8 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @DataJpaTest
-//@AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class ManufacturerRepositoryTest {
+class ManufacturerRepositoryTest {
 
     @Autowired
     private ManufacturerRepository manufacturerRepository;

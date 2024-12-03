@@ -23,7 +23,6 @@ public class AccessTokenImpl implements AccessToken {
         this.subject = subject;
         this.employeeId = employeeId;
         this.role = role;
-//        this.roles = roles != null ? Set.copyOf(roles) : Collections.emptySet();
         this.departments = departments != null ? Set.copyOf(departments) : Collections.emptySet();
-        }
+    }
 }

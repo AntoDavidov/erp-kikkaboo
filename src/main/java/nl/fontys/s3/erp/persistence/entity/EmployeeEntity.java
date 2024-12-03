@@ -8,14 +8,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import nl.fontys.s3.erp.domain.users.Department;
-import nl.fontys.s3.erp.domain.users.Role;
 import nl.fontys.s3.erp.domain.users.Status;
 import org.hibernate.validator.constraints.Length;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.Set;
 
 @Entity

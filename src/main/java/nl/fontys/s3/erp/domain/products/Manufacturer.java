@@ -2,7 +2,6 @@ package nl.fontys.s3.erp.domain.products;
 
 import lombok.*;
 
-import java.util.List;
 
 @Getter
 @Setter
@@ -15,7 +14,8 @@ public class Manufacturer {
     private String companyName;
     private Country country;
     private String city;
-//    private List<Product> products;
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

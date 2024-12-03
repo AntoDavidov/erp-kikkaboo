@@ -11,8 +11,7 @@ public class ProductConverter {
     }
 
     public static Product convert(ProductEntity productEntity) {
-        if(productEntity instanceof BabyStrollersEntity){
-            BabyStrollersEntity babyStrollersEntity = (BabyStrollersEntity) productEntity;
+        if(productEntity instanceof BabyStrollersEntity babyStrollersEntity){
             return BabyStrollers.builder()
                     .productId(babyStrollersEntity.getProductId())
                     .sku(babyStrollersEntity.getSku())

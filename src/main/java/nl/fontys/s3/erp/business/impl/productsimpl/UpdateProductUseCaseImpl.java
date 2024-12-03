@@ -34,8 +34,7 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
         }
         updateCommonFields(request, productEntity);
 
-        if (request instanceof UpdateBabyStrollerRequest) {
-            UpdateBabyStrollerRequest babyStrollerRequest = (UpdateBabyStrollerRequest) request;
+        if (request instanceof UpdateBabyStrollerRequest babyStrollerRequest) {
             updateBabyStrollerFields((BabyStrollersEntity) productEntity, babyStrollerRequest);
         }
         productRepository.save(productEntity);

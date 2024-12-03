@@ -31,9 +31,6 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
     @Override
     public String encode(AccessToken accessToken) {
         Map<String, Object> claimsMap = new HashMap<>();
-//        if (!CollectionUtils.isEmpty(accessToken.getRoles())) {
-//            claimsMap.put("roles", accessToken.getRoles());
-//        }
         if(accessToken.getRole() != null) {
             claimsMap.put("role", accessToken.getRole());
         }

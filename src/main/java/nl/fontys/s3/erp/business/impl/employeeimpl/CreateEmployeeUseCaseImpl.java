@@ -65,11 +65,5 @@ public class CreateEmployeeUseCaseImpl implements CreateEmployeeUseCase {
         return employeeRepository.save(newEmployee);
     }
 
-//    private DepartmentEntity mapEnumToExistingEntity(Department department) {
-//        // Construct DepartmentEntity with only the name (ID will be fetched automatically during persistence)
-//        return DepartmentEntity.builder()
-//                .name(department.name()) // Use the enum's name
-//                .build();
-//    }
 }
 

@@ -30,7 +30,7 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
         if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("PRODUCT")) {
             throw new PermissionDenied("add a product.");
         }
-        if (request instanceof CreateBabyStrollerRequest) {
+        if (request instanceof CreateBabyStrollerRequest babyStrollerRequest) {
             if (productRepository.existsBySku(request.getSku())) {
                 throw new ProductExistsBySKU();
             }
@@ -40,8 +40,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
             ManufacturerEntity manufacturer = manufacturerRepository.findById(request.getManufacturerId())
                     .orElseThrow(ManufacturerDoesNotExist::new);
 
-
-            CreateBabyStrollerRequest babyStrollerRequest = (CreateBabyStrollerRequest) request;
 
             BabyStrollersEntity babyStrollerEntity = BabyStrollersEntity.builder()
                     .sku(babyStrollerRequest.getSku())

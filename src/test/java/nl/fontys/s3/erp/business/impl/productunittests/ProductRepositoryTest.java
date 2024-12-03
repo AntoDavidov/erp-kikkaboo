@@ -17,7 +17,7 @@ import java.math.BigDecimal;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
-public class ProductRepositoryTest {
+class ProductRepositoryTest {
 
 
     @Autowired
