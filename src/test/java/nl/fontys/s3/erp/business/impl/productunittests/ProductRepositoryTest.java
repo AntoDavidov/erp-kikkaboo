@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
+package nl.fontys.s3.erp.business.impl.productunittests;
 
 
 import jakarta.persistence.EntityManager;
@@ -8,11 +8,9 @@ import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
-import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 
 import java.math.BigDecimal;
 

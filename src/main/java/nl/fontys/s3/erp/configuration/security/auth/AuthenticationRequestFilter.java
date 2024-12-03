@@ -6,6 +6,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
+import nl.fontys.s3.erp.configuration.security.token.AccessTokenDecoder;
 import nl.fontys.s3.erp.configuration.security.token.exception.InvalidAccessTokenException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,7 +26,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     private static final String SPRING_SECURITY_ROLE_PREFIX = "ROLE_";
 
     @Autowired
-    private nl.fontys.s3.erp.configuration.security.token.AccessTokenDecoder accessTokenDecoder;
+    private AccessTokenDecoder accessTokenDecoder;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)

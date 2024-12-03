@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.EmployeeUnitTests;
+package nl.fontys.s3.erp.business.impl.employeeunittests;
 
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.impl.employeeimpl.GetEmployeeUseCaseImpl;

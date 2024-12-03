@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.ProductsUnitTests;
+package nl.fontys.s3.erp.business.impl.productunittests;
 
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductDoesNotExist;

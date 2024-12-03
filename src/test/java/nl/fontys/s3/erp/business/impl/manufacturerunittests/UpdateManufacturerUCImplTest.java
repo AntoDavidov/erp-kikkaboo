@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.ManufacturerUnitTests;
+package nl.fontys.s3.erp.business.impl.manufacturerunittests;
 
 import nl.fontys.s3.erp.business.dtos.manufacturerdto.UpdateManufacturerRequest;
 import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;

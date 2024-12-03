@@ -1,4 +1,4 @@
-package nl.fontys.s3.erp.business.impl.UserUnitTests;
+package nl.fontys.s3.erp.business.impl.userunittests;
 
 import nl.fontys.s3.erp.business.dtos.userdto.CreateUserForEmployeeRequest;
 import nl.fontys.s3.erp.business.dtos.userdto.CreateUserForEmployeeResponse;
