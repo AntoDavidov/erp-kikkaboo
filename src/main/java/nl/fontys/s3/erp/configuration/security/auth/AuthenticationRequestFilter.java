@@ -5,6 +5,7 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.AllArgsConstructor;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.configuration.security.token.AccessTokenDecoder;
 import nl.fontys.s3.erp.configuration.security.token.exception.InvalidAccessTokenException;
@@ -21,11 +22,11 @@ import java.io.IOException;
 import java.util.List;
 
 @Component
+@AllArgsConstructor
 public class AuthenticationRequestFilter extends OncePerRequestFilter {
 
     private static final String SPRING_SECURITY_ROLE_PREFIX = "ROLE_";
 
-    @Autowired
     private AccessTokenDecoder accessTokenDecoder;
 
     @Override
@@ -56,10 +57,7 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
     }
 
     private void setupSpringSecurityContext(AccessToken accessToken) {
-        System.out.println("Raw Role from AccessToken: " + accessToken.getRole());
-
         String authorityRole = SPRING_SECURITY_ROLE_PREFIX + accessToken.getRole();
-        System.out.println("Mapped Authority Role: " + authorityRole);
 
         UserDetails userDetails = new User(
                 accessToken.getSubject(),
@@ -67,7 +65,6 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
                 List.of(new SimpleGrantedAuthority(authorityRole))
         );
 
-        System.out.println("UserDetails Authorities: " + userDetails.getAuthorities());
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                 userDetails, null, userDetails.getAuthorities());
@@ -75,9 +72,6 @@ public class AuthenticationRequestFilter extends OncePerRequestFilter {
         usernamePasswordAuthenticationToken.setDetails(accessToken);
 
         SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
-
-        System.out.println("Final Security Context Authentication: " +
-                SecurityContextHolder.getContext().getAuthentication());
     }
 
 

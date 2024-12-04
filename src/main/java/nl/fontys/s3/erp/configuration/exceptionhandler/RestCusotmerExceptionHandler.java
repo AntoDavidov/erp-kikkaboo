@@ -120,7 +120,6 @@ public class RestCusotmerExceptionHandler extends ResponseEntityExceptionHandler
     }
     @ExceptionHandler(PermissionDenied.class)
     public ResponseEntity<String> handlePermissionDenied(PermissionDenied ex) {
-        System.err.println("PermissionDenied exception: " + ex.getMessage());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 }
