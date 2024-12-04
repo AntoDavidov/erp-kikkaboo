@@ -27,3 +27,16 @@ sonar:
   stage: sonar
   script:
     - ./gradlew test jacocoTestReport sonar
+
+deploy:
+  stage: deploy
+  script:
+    -./gradlew clean assemble
+    - docker stop erp_container; if ($?) { docker rm erp_container }
+    - docker rmi erp; if ($?) {}
+    - docker build -t erp .
+    - docker run -d -p 8090:8080 --net=erp_db_staging --env spring_profiles_active=staging --name=erp_container erp
+
+
+
+
