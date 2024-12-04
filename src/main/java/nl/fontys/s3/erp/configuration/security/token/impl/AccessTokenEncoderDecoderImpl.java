@@ -69,9 +69,8 @@ public class AccessTokenEncoderDecoderImpl implements AccessTokenEncoder, Access
             List<String> departments = claims.get("departments", List.class);
 
 
-            AccessToken token = new AccessTokenImpl(claims.getSubject(), employeeId, role, departments);
+            return new AccessTokenImpl(claims.getSubject(), employeeId, role, departments);
 
-            return token;
         } catch (JwtException e) {
             throw new InvalidAccessTokenException("Failed to decode access token:" + e.getMessage());
         }
