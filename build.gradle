@@ -57,7 +57,7 @@ sonar{
         property("sonar.projectKey", "sonar-erp")
         property("sonar.projectName", "sonar-erp")
         property("sonar.host.url", "http://localhost:9000")
-        property("sonar.token", "sqp_8415dd5aaba88b0102b6fe1174270c5d380e29bc")
+        property("sonar.token", "sqp_e634b3cbc7c33c0c905529775876282fe8e3032e")
         property "sonar.coverage.exclusions", "**/src/main/java/nl/fontys/s3/erp/configuration/**," +
                 "**/src/main/java/nl/fontys/s3/erp/controller/**,**/src/main/java/nl/fontys/s3/erp/domain/**,**/src/main/java/nl/fontys/s3/erp/persistence/**" +
                 "**/src/main/java/nl/fontys/s3/erp/business/impl/announcementsimpl/**," +
