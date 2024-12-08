@@ -58,4 +58,3 @@ public class AnnouncementEntity {
     @Column(name = "is_department_only")
     private boolean isDepartmentOnly;
 }
-//
