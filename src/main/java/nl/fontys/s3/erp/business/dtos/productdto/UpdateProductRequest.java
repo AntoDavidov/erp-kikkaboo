@@ -41,5 +41,5 @@ public class UpdateProductRequest {
     private BigDecimal weight;
 
     @NotNull
-    private Long ManufacturerId;
+    private Long manufacturerId;
 }

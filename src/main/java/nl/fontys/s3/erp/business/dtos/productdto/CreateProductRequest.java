@@ -52,6 +52,6 @@ public class CreateProductRequest {
     private BigDecimal weight;
 
     @NotNull
-    private Long ManufacturerId;
+    private Long manufacturerId;
 
 }

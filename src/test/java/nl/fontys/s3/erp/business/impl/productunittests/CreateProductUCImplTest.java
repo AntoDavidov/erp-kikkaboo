@@ -86,7 +86,7 @@ class CreateProductUCImplTest {
 
         CreateBabyStrollerRequest request = CreateBabyStrollerRequest.builder()
                 .sku("12345678")
-                .ManufacturerId(1L)
+                .manufacturerId(1L)
                 .build();
 
         // Act & Assert
@@ -115,7 +115,7 @@ class CreateProductUCImplTest {
                 .shortName("Stroller")
                 .description("A comfortable stroller")
                 .costPrice(BigDecimal.valueOf(100.00))
-                .ManufacturerId(1L)
+                .manufacturerId(1L)
                 .weight(BigDecimal.valueOf(5.5))
                 .imageURL("image.jpg")
                 .maxWeightCapacity(15.0)
