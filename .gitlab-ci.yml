@@ -4,11 +4,13 @@
 # isolated from any previous builds.
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  JWT_SECRET: E91E158E4C6656F68B1B5D1C316766DE98D2AD6EF3BFB44F78E9CFCDF5
 
 stages:
   - build
   - test
   - sonar
+  - deploy
 
 build:
   stage: build
@@ -26,3 +28,16 @@ sonar:
   stage: sonar
   script:
     - ./gradlew test jacocoTestReport sonar
+
+deploy:
+  stage: deploy
+  script:
+    -./gradlew clean assemble
+    - docker stop erp_container; if ($?) { docker rm erp_container }
+    - docker rmi erp; if ($?) {}
+    - docker build -t erp .
+    - docker run -d -p 8090:8080 --net=erp_db_staging --env spring_profiles_active=staging --name=erp_container erp
+
+
+
+

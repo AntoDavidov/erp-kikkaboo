@@ -1,3 +1,5 @@
+-- V1__CreateInitialTables.sql
+
 CREATE TABLE manufacturer
 (
     id INT NOT NULL AUTO_INCREMENT,

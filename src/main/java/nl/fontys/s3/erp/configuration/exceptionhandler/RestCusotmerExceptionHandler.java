@@ -2,8 +2,10 @@ package nl.fontys.s3.erp.configuration.exceptionhandler;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.business.exceptions.ProductExistsBySKU;
 import org.springframework.http.*;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.util.CollectionUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -111,5 +113,13 @@ public class RestCusotmerExceptionHandler extends ResponseEntityExceptionHandler
     }
 
     private record ValidationErrorDTO(String field, String error) {
+    }
+    @ExceptionHandler(value = {AccessDeniedException.class})
+    public ResponseEntity<Object> handleConstraintViolationException(final AccessDeniedException error) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
+    }
+    @ExceptionHandler(PermissionDenied.class)
+    public ResponseEntity<String> handlePermissionDenied(PermissionDenied ex) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(ex.getMessage());
     }
 }

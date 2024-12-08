@@ -6,7 +6,6 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
-import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 
@@ -14,6 +13,7 @@ import nl.fontys.s3.erp.domain.products.TypeOfStroller;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@Table(name = "baby_stroller")
 @DiscriminatorValue("BABY_STROLLER")
 @SuperBuilder
 public class BabyStrollersEntity extends ProductEntity {
@@ -29,6 +29,6 @@ public class BabyStrollersEntity extends ProductEntity {
     @Column(name = "type_of_stroller", nullable = false)
     private TypeOfStroller typeOfStroller;
 
-    @Column(name = "is_foldable", nullable = false)
+    @Column(name = "foldable", nullable = false)
     private boolean foldable;
 }

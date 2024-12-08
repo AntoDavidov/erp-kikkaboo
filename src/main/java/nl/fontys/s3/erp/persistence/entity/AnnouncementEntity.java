@@ -7,10 +7,8 @@ import lombok.*;
 import lombok.experimental.SuperBuilder;
 import nl.fontys.s3.erp.domain.announcements.AnnouncementType;
 import nl.fontys.s3.erp.domain.users.Department;
-import nl.fontys.s3.erp.domain.users.User;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity

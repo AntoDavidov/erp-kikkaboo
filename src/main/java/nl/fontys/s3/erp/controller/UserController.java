@@ -3,39 +3,38 @@ package nl.fontys.s3.erp.controller;
 
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserRequest;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.CreateUserResponse;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.GetUsersResponse;
-import nl.fontys.s3.erp.business.DTOs.UserDTOs.UpdateUserRequest;
-import nl.fontys.s3.erp.business.UserUseCases.*;
+import nl.fontys.s3.erp.business.dtos.userdto.*;
+import nl.fontys.s3.erp.business.userusecases.*;
 import nl.fontys.s3.erp.domain.users.User;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
 @AllArgsConstructor
 public class UserController {
-    private final CreateUserUseCase createUserUseCase;
+    private final CreateUserForEmployeeUseCase createUserForEmployeeUseCase;
     private final GetUserUseCase getUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
-    private final UpdateUserUseCase updateUserUseCase;
 
     @GetMapping()
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
     public ResponseEntity<GetUsersResponse> getUsers() {
         return ResponseEntity.ok(getAllUsersUseCase.getAllUsers());
     }
 
     @PostMapping()
-    public ResponseEntity<CreateUserResponse> createUser(@RequestBody @Valid CreateUserRequest request) {
-        CreateUserResponse response = createUserUseCase.createUser(request);
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
+    public ResponseEntity<CreateUserForEmployeeResponse> createUser(@RequestBody @Valid CreateUserForEmployeeRequest request) {
+        CreateUserForEmployeeResponse response = createUserForEmployeeUseCase.createUserForEmployee(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
     public ResponseEntity<Void> deleteUser(@PathVariable int id) {
         deleteUserUseCase.deleteUser(id);
 
@@ -43,6 +42,7 @@ public class UserController {
     }
 
     @GetMapping("{id}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER')")
     public ResponseEntity<User> getUser(@PathVariable(value = "id") final long id) {
         final User user = getUserUseCase.getUser(id);
         if(user == null) {
@@ -51,12 +51,4 @@ public class UserController {
 
         return ResponseEntity.ok().body(user);
     }
-
-    @PutMapping("{id}")
-    public ResponseEntity<Void> updateUser(@PathVariable(value = "id") final long id, @RequestBody @Valid UpdateUserRequest request) {
-        request.setUserId(id);
-        updateUserUseCase.updateUser(request);
-        return ResponseEntity.noContent().build();
-    }
-
 }
