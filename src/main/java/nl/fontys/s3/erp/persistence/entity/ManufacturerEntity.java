@@ -8,6 +8,7 @@ import lombok.experimental.SuperBuilder;
 import nl.fontys.s3.erp.domain.products.Country;
 import org.hibernate.validator.constraints.Length;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -40,5 +41,5 @@ public class ManufacturerEntity {
     private String city;
 
     @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    private List<ProductEntity> products;
+    private List<ProductEntity> products = new ArrayList<>();
 }
