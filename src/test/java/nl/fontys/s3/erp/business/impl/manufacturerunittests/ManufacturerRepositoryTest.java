@@ -8,8 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 @DataJpaTest
 class ManufacturerRepositoryTest {
@@ -20,25 +19,59 @@ class ManufacturerRepositoryTest {
     private EntityManager em;
 
     @Test
-    void save_shouldSaveManufacturer() {
-        ManufacturerEntity manufacturer = createManufacturer("Test1", Country.CHINA, "Varna");
+    void existsByCompanyNameCustom_returnsTrue_whenManufacturerExists() {
+        // Arrange
+        ManufacturerEntity manufacturer = ManufacturerEntity.builder()
+                .id(1L)
+                .companyName("KikkaBoo")
+                .city("Sofia")
+                .country(Country.BULGARIA)
+                .build();
+        manufacturerRepository.saveAndFlush(manufacturer);
 
-        em.persist(manufacturer);
-        em.flush();
+        // Act
+        boolean exists = manufacturerRepository.existsByCompanyNameCustom("KikkaBoo");
 
-        ManufacturerEntity savedManufacturer = em.find(ManufacturerEntity.class, manufacturer.getId());
-
-        assertNotNull(savedManufacturer.getId());
-        assertEquals("Test1", savedManufacturer.getCompanyName());
-        assertEquals(Country.CHINA, savedManufacturer.getCountry());
-        assertEquals("Varna", savedManufacturer.getCity());
+        // Assert
+        assertTrue(exists);
     }
 
-    private ManufacturerEntity createManufacturer(String companyName, Country country, String city) {
-        return ManufacturerEntity.builder()
-                .companyName(companyName)
-                .country(country)
-                .city(city)
+    @Test
+    void existsByCompanyNameCustom_returnsFalse_whenManufacturerDoesNotExist() {
+        // Act
+        boolean exists = manufacturerRepository.existsByCompanyNameCustom("NonExistentCompany");
+
+        // Assert
+        assertFalse(exists);
+    }
+    @Test
+    void getPlaceholderManufacturer_returnsPlaceholder_whenExists() {
+        // Arrange
+        ManufacturerEntity placeholder = ManufacturerEntity.builder()
+                .id(1L)
+                .companyName("Placeholder")
+                .city("Unknown City")
+                .country(Country.UNKNOWN)
                 .build();
+        manufacturerRepository.saveAndFlush(placeholder);
+
+        ManufacturerEntity persisted = manufacturerRepository.findById(1L).orElse(null);
+        assertNotNull(persisted, "Placeholder manufacturer was not saved correctly");
+
+        // Act
+        ManufacturerEntity result = manufacturerRepository.getPlaceholderManufacturer(1L);
+
+        // Assert
+        assertNotNull(result);
+        assertEquals(1L, result.getId());
+        assertEquals("Placeholder", result.getCompanyName());
+    }
+    @Test
+    void getPlaceholderManufacturer_returnsNull_whenPlaceholderDoesNotExist() {
+        // Act
+        ManufacturerEntity result = manufacturerRepository.getPlaceholderManufacturer(-1L);
+
+        // Assert
+        assertNull(result);
     }
 }

@@ -152,7 +152,7 @@ class DeleteManufacturerUCImplTest {
                 .build();
 
         when(manufacturerRepository.findById(1L)).thenReturn(Optional.of(manufacturer));
-        when(manufacturerRepository.getPlaceholderManufacturer()).thenReturn(placeholder);
+        when(manufacturerRepository.getPlaceholderManufacturer(-1L)).thenReturn(placeholder);
         when(productRepository.findAllByManufacturerName("KikkaBoo")).thenReturn(List.of(product1, product2));
 
         // Act

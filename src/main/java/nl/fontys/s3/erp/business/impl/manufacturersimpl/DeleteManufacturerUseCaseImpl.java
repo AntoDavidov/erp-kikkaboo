@@ -41,7 +41,7 @@ public class DeleteManufacturerUseCaseImpl implements DeleteManufacturerUseCase 
         ManufacturerEntity manufacturer = manufacturerRepository.findById(manufacturerId)
                 .orElseThrow(ManufacturerDoesNotExist::new);
 
-        ManufacturerEntity placeholder = manufacturerRepository.getPlaceholderManufacturer();
+        ManufacturerEntity placeholder = manufacturerRepository.getPlaceholderManufacturer(-1L);
 
         List<ProductEntity> products = productRepository.findAllByManufacturerName(manufacturer.getCompanyName());
 
