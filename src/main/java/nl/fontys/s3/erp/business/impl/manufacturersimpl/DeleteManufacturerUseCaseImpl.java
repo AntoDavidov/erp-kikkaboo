@@ -19,33 +19,16 @@ import java.util.List;
 
 public class DeleteManufacturerUseCaseImpl implements DeleteManufacturerUseCase {
     public final ManufacturerRepository manufacturerRepository;
-    public final ProductRepository productRepository;
     private final AccessToken accessToken;
 
     @Override
     public void deleteManufacturer(long manufacturerId) {
-        if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("TRADE")) {
+        if (accessToken.getDepartments() == null || !accessToken.getDepartments().contains("TRADE")) {
             throw new PermissionDenied("delete a manufacturer.");
         }
-        ManufacturerEntity manufacturer = manufacturerRepository.findById(manufacturerId)
-                .orElseThrow(ManufacturerDoesNotExist::new);
-
-        if (!manufacturer.getProducts().isEmpty()) {
-            reassignProductsToPlaceholder(manufacturerId);
+        if(!manufacturerRepository.existsById(manufacturerId)) {
+            throw new ManufacturerDoesNotExist();
         }
-
         manufacturerRepository.deleteById(manufacturerId);
-    }
-
-    private void reassignProductsToPlaceholder(Long manufacturerId) {
-        ManufacturerEntity manufacturer = manufacturerRepository.findById(manufacturerId)
-                .orElseThrow(ManufacturerDoesNotExist::new);
-
-        ManufacturerEntity placeholder = manufacturerRepository.getPlaceholderManufacturer(-1L);
-
-        List<ProductEntity> products = productRepository.findAllByManufacturerName(manufacturer.getCompanyName());
-
-        products.forEach(product -> product.setManufacturer(placeholder));
-        productRepository.saveAll(products);
     }
 }

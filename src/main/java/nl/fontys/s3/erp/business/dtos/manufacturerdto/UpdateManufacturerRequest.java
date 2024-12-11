@@ -5,6 +5,7 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import nl.fontys.s3.erp.domain.products.Country;
+import nl.fontys.s3.erp.domain.users.Status;
 
 @Getter
 @Setter
@@ -23,5 +24,7 @@ public class UpdateManufacturerRequest {
     @NotBlank
     private String city;
 
+    @NotNull
+    private Status status;
 
 }

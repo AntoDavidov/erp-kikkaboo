@@ -6,6 +6,7 @@ import lombok.*;
 import jakarta.persistence.*;
 import lombok.experimental.SuperBuilder;
 import nl.fontys.s3.erp.domain.products.Country;
+import nl.fontys.s3.erp.domain.users.Status;
 import org.hibernate.validator.constraints.Length;
 
 import java.util.ArrayList;
@@ -39,6 +40,9 @@ public class ManufacturerEntity {
     @Length(max = 50)
     @Column(name = "city", nullable = false)
     private String city;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
 
     @OneToMany(mappedBy = "manufacturer", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     private List<ProductEntity> products = new ArrayList<>();

@@ -16,6 +16,7 @@ public class ManufacturerConverter {
                 .companyName(manufacturer.getCompanyName())
                 .city(manufacturer.getCity())
                 .country(manufacturer.getCountry())
+                .status(manufacturer.getStatus())
 //                .products(Optional.ofNullable(manufacturer.getProducts())
 //                        .map(products -> products.stream()
 //                                .map(ProductConverter::convert)

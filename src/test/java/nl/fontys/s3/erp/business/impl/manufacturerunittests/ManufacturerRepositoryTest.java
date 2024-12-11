@@ -22,12 +22,12 @@ class ManufacturerRepositoryTest {
     void existsByCompanyNameCustom_returnsTrue_whenManufacturerExists() {
         // Arrange
         ManufacturerEntity manufacturer = ManufacturerEntity.builder()
-                .id(1L)
                 .companyName("KikkaBoo")
                 .city("Sofia")
                 .country(Country.BULGARIA)
                 .build();
-        manufacturerRepository.saveAndFlush(manufacturer);
+        em.persist(manufacturer);
+        em.flush();
 
         // Act
         boolean exists = manufacturerRepository.existsByCompanyNameCustom("KikkaBoo");
@@ -43,35 +43,5 @@ class ManufacturerRepositoryTest {
 
         // Assert
         assertFalse(exists);
-    }
-    @Test
-    void getPlaceholderManufacturer_returnsPlaceholder_whenExists() {
-        // Arrange
-        ManufacturerEntity placeholder = ManufacturerEntity.builder()
-                .id(1L)
-                .companyName("Placeholder")
-                .city("Unknown City")
-                .country(Country.UNKNOWN)
-                .build();
-        manufacturerRepository.saveAndFlush(placeholder);
-
-        ManufacturerEntity persisted = manufacturerRepository.findById(1L).orElse(null);
-        assertNotNull(persisted, "Placeholder manufacturer was not saved correctly");
-
-        // Act
-        ManufacturerEntity result = manufacturerRepository.getPlaceholderManufacturer(1L);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(1L, result.getId());
-        assertEquals("Placeholder", result.getCompanyName());
-    }
-    @Test
-    void getPlaceholderManufacturer_returnsNull_whenPlaceholderDoesNotExist() {
-        // Act
-        ManufacturerEntity result = manufacturerRepository.getPlaceholderManufacturer(-1L);
-
-        // Assert
-        assertNull(result);
     }
 }

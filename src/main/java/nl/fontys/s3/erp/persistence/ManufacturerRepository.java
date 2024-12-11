@@ -10,6 +10,4 @@ public interface ManufacturerRepository extends JpaRepository<ManufacturerEntity
     @Query("select count(m) > 0 from ManufacturerEntity m where m.companyName = ?1")
     boolean existsByCompanyNameCustom(String companyName);
 
-    @Query("SELECT m FROM ManufacturerEntity m WHERE m.id = :placeholderId")
-    ManufacturerEntity getPlaceholderManufacturer(@Param("placeholderId") Long placeholderId);
 }

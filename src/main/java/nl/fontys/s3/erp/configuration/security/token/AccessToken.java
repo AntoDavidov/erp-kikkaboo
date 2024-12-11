@@ -10,6 +10,4 @@ public interface AccessToken {
     String getRole();
 
     Set<String> getDepartments();
-
-
 }

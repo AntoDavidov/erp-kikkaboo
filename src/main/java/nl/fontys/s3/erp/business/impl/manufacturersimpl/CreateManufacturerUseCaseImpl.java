@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.dtos.manufacturerdto.CreateManufacturerRequest;
 import nl.fontys.s3.erp.business.dtos.manufacturerdto.CreateManufacturerResponse;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
+import nl.fontys.s3.erp.domain.users.Status;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.springframework.stereotype.Service;
@@ -39,6 +40,7 @@ public class CreateManufacturerUseCaseImpl implements CreateManufacturerUseCase 
                 .companyName(request.getCompanyName())
                 .city(request.getCity())
                 .country(request.getCountry())
+                .status(Status.ACTIVE)
                 .build();
 
         return manufacturerRepository.save(newManufacturer);
