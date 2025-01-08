@@ -8,6 +8,7 @@ import nl.fontys.s3.erp.business.impl.converters.ProductConverter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.TypeOfStroller;
+import nl.fontys.s3.erp.domain.users.Status;
 import nl.fontys.s3.erp.persistence.ProductRepository;
 import nl.fontys.s3.erp.persistence.entity.BabyStrollersEntity;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
@@ -80,6 +81,7 @@ class GetProductsUCImplTest {
                 .companyName("KikkaBoo")
                 .city("city")
                 .country(Country.BULGARIA)
+                .status(Status.ACTIVE)
                 .build();
 
         ProductEntity productEntity1 = BabyStrollersEntity.builder()
@@ -142,6 +144,7 @@ class GetProductsUCImplTest {
                 .companyName("KikkaBoo")
                 .city("city")
                 .country(Country.BULGARIA)
+                .status(Status.ACTIVE)
                 .build();
 
         ProductEntity productEntity = BabyStrollersEntity.builder()

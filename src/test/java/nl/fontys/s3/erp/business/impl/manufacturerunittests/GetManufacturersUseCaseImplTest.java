@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.impl.converters.ManufacturerConverter;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
+import nl.fontys.s3.erp.domain.users.Status;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.junit.jupiter.api.Test;
@@ -85,6 +86,7 @@ class GetManufacturersUseCaseImplTest {
                 .companyName("Manufacturer 1")
                 .city("City 1")
                 .country(Country.CHINA)
+                .status(Status.ACTIVE)
                 .build();
 
         ManufacturerEntity manufacturerEntity2 = ManufacturerEntity.builder()
@@ -92,6 +94,7 @@ class GetManufacturersUseCaseImplTest {
                 .companyName("Manufacturer 2")
                 .city("City 2")
                 .country(Country.BULGARIA)
+                .status(Status.ACTIVE)
                 .build();
 
         List<ManufacturerEntity> entities = List.of(manufacturerEntity1, manufacturerEntity2);

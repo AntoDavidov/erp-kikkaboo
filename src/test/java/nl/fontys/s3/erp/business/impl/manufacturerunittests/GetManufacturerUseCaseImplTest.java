@@ -7,6 +7,7 @@ import nl.fontys.s3.erp.business.impl.manufacturersimpl.GetManufacturerUseCaseIm
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.domain.products.Country;
 import nl.fontys.s3.erp.domain.products.Manufacturer;
+import nl.fontys.s3.erp.domain.users.Status;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
 import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
 import org.junit.jupiter.api.Test;
@@ -65,6 +66,7 @@ class GetManufacturerUseCaseImplTest {
                 .companyName("KikkaBoo")
                 .city("Sofia")
                 .country(Country.BULGARIA)
+                .status(Status.ACTIVE)
                 .build();
 
         when(manufacturerRepository.findById(1L)).thenReturn(Optional.of(manufacturerEntity));
