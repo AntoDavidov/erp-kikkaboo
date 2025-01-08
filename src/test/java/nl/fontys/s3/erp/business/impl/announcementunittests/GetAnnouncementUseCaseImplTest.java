@@ -10,6 +10,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.MockedStatic;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
@@ -55,9 +56,9 @@ public class GetAnnouncementUseCaseImplTest {
 
         when(announcementRepository.findById(announcementId)).thenReturn(Optional.of(mockEntity));
 
-        // Mock the static method AnnouncementConverter.convert
-        mockStatic(AnnouncementConverter.class);
-        when(AnnouncementConverter.convert(mockEntity)).thenReturn(expectedAnnouncement);
+        // Manually register and close the static mock
+        MockedStatic<AnnouncementConverter> mockedConverter = mockStatic(AnnouncementConverter.class);
+        mockedConverter.when(() -> AnnouncementConverter.convert(mockEntity)).thenReturn(expectedAnnouncement);
 
         // Act
         Announcement result = getAnnouncementUseCase.getAnnouncement(announcementId);
@@ -67,5 +68,8 @@ public class GetAnnouncementUseCaseImplTest {
         assertEquals(expectedAnnouncement.getId(), result.getId());
         assertEquals(expectedAnnouncement.getTitle(), result.getTitle());
         assertEquals(expectedAnnouncement.getContent(), result.getContent());
+
+        // Close the static mock manually
+        mockedConverter.close();
     }
 }
