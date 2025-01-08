@@ -18,7 +18,6 @@ public class NotificationController {
 
     @PostMapping
     public ResponseEntity<Void> createNotification(@RequestBody Announcement announcement) {
-        System.out.println("Received message: " + announcement);
         messagingTemplate.convertAndSend("/topic/notifications", announcement);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }

@@ -7,12 +7,8 @@ import nl.fontys.s3.erp.business.exceptions.ManufacturerDoesNotExist;
 import nl.fontys.s3.erp.business.exceptions.PermissionDenied;
 import nl.fontys.s3.erp.configuration.security.token.AccessToken;
 import nl.fontys.s3.erp.persistence.ManufacturerRepository;
-import nl.fontys.s3.erp.persistence.ProductRepository;
-import nl.fontys.s3.erp.persistence.entity.ManufacturerEntity;
-import nl.fontys.s3.erp.persistence.entity.ProductEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 
 @Service
 @AllArgsConstructor
