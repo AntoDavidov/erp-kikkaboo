@@ -20,6 +20,12 @@ public class GetEmployeeUseCaseImpl implements GetEmployeeUseCase {
 
     @Override
     public Optional<Employee> getEmployee(long id) {
+        // Allow self-access
+        if (accessToken.getEmployeeId() == id) {
+            Optional<EmployeeEntity> employeeEntityOptional = employeeRepository.findById(id);
+            return employeeEntityOptional.map(EmployeeConverter::toEmployee);
+        }
+
         if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("ACCOUNTING")) {
             throw new PermissionDenied("get an employee.");
         }

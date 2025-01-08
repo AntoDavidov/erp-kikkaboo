@@ -9,6 +9,7 @@ public class AnnouncementConverter {
     }
     public static Announcement convert(AnnouncementEntity entity) {
         return Announcement.builder()
+                .id(entity.getId())
                 .title(entity.getTitle())
                 .content(entity.getContent())
                 .createdAt(entity.getCreatedAt())
