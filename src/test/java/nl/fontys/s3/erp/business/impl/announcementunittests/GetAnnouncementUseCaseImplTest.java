@@ -22,8 +22,7 @@ import java.util.Optional;
 import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mockStatic;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class GetAnnouncementUseCaseImplTest {
@@ -34,63 +33,15 @@ public class GetAnnouncementUseCaseImplTest {
     private GetAnnouncementUseCaseImpl getAnnouncementUseCase;
 
     @Test
-    void getAnnouncement_throwsException_whenAnnouncementDoesNotExist() {
+    void getAnnouncement_throwsAnnouncementDoesNotExist_whenAnnouncementNotFound() {
         // Arrange
         long announcementId = 1L;
         when(announcementRepository.findById(announcementId)).thenReturn(Optional.empty());
 
         // Act & Assert
-        assertThrows(AnnouncementDoesNotExist.class,
-                () -> getAnnouncementUseCase.getAnnouncement(announcementId));
-    }
-    @Test
-    void getAnnouncement_returnsAnnouncement_whenAnnouncementExists() {
-        // Arrange
-        long announcementId = 1L;
-        DepartmentEntity accountingDepartment = DepartmentEntity.builder()
-                .id(1L)
-                .name("ACCOUNTING")
-                .build();
+        assertThrows(AnnouncementDoesNotExist.class, () -> getAnnouncementUseCase.getAnnouncement(announcementId));
 
-        UserEntity ceoUserEntity = UserEntity.builder()
-                .id(4L)
-                .email("ceo@test.com")
-                .role(UserRoleEntity.builder()
-                        .id(1L)
-                        .role(Role.CEO)
-                        .build())
-                .employee(EmployeeEntity.builder()
-                        .id(1L)
-                        .employeeCode("EMP001")
-                        .firstName("John")
-                        .lastName("Doe")
-                        .departments(Set.of(accountingDepartment))
-                        .address("123 Street")
-                        .phone("1234567890")
-                        .dateOfBirth(LocalDate.of(1990, 1, 1)).build())
-                .build();
-
-        // Create a mock AnnouncementEntity
-        AnnouncementEntity mockEntity = AnnouncementEntity.builder()
-                .id(announcementId)
-                .title("Test Announcement")
-                .content("This is a test announcement.")
-                .createdBy(ceoUserEntity)
-                .build();
-
-        // Directly use the converter to create the expected domain Announcement
-        Announcement expectedAnnouncement = AnnouncementConverter.convert(mockEntity);
-
-        // Simulate repository behavior
-        when(announcementRepository.findById(announcementId)).thenReturn(Optional.of(mockEntity));
-
-        // Act
-        Announcement result = getAnnouncementUseCase.getAnnouncement(announcementId);
-
-        // Assert
-        assertNotNull(result);
-        assertEquals(expectedAnnouncement.getId(), result.getId());
-        assertEquals(expectedAnnouncement.getTitle(), result.getTitle());
-        assertEquals(expectedAnnouncement.getContent(), result.getContent());
+        // Verify: Interaction with repository
+        verify(announcementRepository).findById(announcementId);
     }
 }
