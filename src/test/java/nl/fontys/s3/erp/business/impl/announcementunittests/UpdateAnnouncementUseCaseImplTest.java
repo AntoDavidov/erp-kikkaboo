@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class UpdateAnnouncementUseCaseImplTest {
+class UpdateAnnouncementUseCaseImplTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 

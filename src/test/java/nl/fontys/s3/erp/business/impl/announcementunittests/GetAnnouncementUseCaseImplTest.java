@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class GetAnnouncementUseCaseImplTest {
+class GetAnnouncementUseCaseImplTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 

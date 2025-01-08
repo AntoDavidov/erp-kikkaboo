@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class DeleteAnnouncementUseCaseImplTest {
+class DeleteAnnouncementUseCaseImplTest {
     @Mock
     private AnnouncementRepository announcementRepository;
 
