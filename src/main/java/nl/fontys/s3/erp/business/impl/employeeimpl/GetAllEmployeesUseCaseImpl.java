@@ -23,9 +23,16 @@ public class GetAllEmployeesUseCaseImpl implements GetAllEmployeeUseCase {
         if(accessToken.getDepartments() == null || !accessToken.getDepartments().contains("ACCOUNTING")) {
             throw new PermissionDenied("get all employees.");
         }
+
+        List<Long> employeeIdsWithUserAccounts = employeeRepository.findEmployeeIdsWithUserAccounts();
+
         List<Employee> employees = employeeRepository.findAll()
                 .stream()
-                .map(EmployeeConverter::toEmployee)
+                .map(employeeEntity -> {
+                    Employee employee = EmployeeConverter.toEmployee(employeeEntity);
+                    employee.setHasUserAccount(employeeIdsWithUserAccounts.contains(employee.getId()));
+                    return employee;
+                })
                 .toList();
         return GetAllEmployeesResponse.builder().employees(employees).build();
     }

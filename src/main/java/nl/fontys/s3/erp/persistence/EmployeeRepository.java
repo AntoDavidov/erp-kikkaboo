@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Integer> {
@@ -15,4 +16,7 @@ public interface EmployeeRepository extends JpaRepository<EmployeeEntity, Intege
     Optional<EmployeeEntity> findByEmployeeCode(String employeeCode);
 
     Optional<EmployeeEntity> findById(long id);
+
+    @Query("SELECT e.id FROM EmployeeEntity e LEFT JOIN UserEntity u ON e.id = u.employee.id WHERE u.id IS NOT NULL")
+    List<Long> findEmployeeIdsWithUserAccounts();
 }

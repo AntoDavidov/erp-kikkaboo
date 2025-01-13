@@ -23,6 +23,7 @@ public class Employee {
     private Status status;
     private Set<Department> departments;
     private BigDecimal salary;
+    private boolean hasUserAccount;
 
     @Override
     public boolean equals(Object o) {
