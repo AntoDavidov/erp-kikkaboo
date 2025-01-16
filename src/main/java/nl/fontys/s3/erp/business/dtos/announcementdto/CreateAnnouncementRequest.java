@@ -21,6 +21,7 @@ public class CreateAnnouncementRequest {
     private String title;
 
     @NotBlank
+    //@Required combines NotBlank NotNull
     private String content;
 
     @NotNull
