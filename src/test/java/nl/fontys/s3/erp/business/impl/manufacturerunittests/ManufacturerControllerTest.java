@@ -28,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
-public class ManufacturerControllerTest {
+class ManufacturerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
@@ -49,7 +49,7 @@ public class ManufacturerControllerTest {
 
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldGetAllManufacturers() throws Exception {
+    void shouldGetAllManufacturers() throws Exception {
         // Arrange
         GetManufacturersResponse response = new GetManufacturersResponse(
                 Collections.singletonList(new Manufacturer(1L, "Manufacturer A", Country.BULGARIA, "Plovdiv", Status.ACTIVE))
@@ -67,7 +67,7 @@ public class ManufacturerControllerTest {
 
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldReturnNotFoundForNonExistentManufacturer() throws Exception {
+    void shouldReturnNotFoundForNonExistentManufacturer() throws Exception {
         // Arrange
         when(getManufacturerUseCase.getManufacturer(999L)).thenReturn(null);
 
@@ -78,9 +78,8 @@ public class ManufacturerControllerTest {
     }
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldCreateManufacturer() throws Exception {
+    void shouldCreateManufacturer() throws Exception {
         // Arrange
-        CreateManufacturerRequest request = new CreateManufacturerRequest(Country.BULGARIA, "Manufacturer A", "Plovdiv");
         CreateManufacturerResponse response = new CreateManufacturerResponse(2L);
         when(createManufacturerUseCase.createManufacturer(any(CreateManufacturerRequest.class))).thenReturn(response);
 
@@ -100,7 +99,7 @@ public class ManufacturerControllerTest {
 
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldFailToCreateManufacturerWithInvalidData() throws Exception {
+    void shouldFailToCreateManufacturerWithInvalidData() throws Exception {
         // Act & Assert
         mockMvc.perform(post("/manufacturers")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -115,7 +114,7 @@ public class ManufacturerControllerTest {
 
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldUpdateManufacturer() throws Exception {
+    void shouldUpdateManufacturer() throws Exception {
         // Arrange
         doNothing().when(updateManufacturerUseCase).updateManufacturer(any(UpdateManufacturerRequest.class));
 
@@ -134,7 +133,7 @@ public class ManufacturerControllerTest {
     }
     @Test
     @WithMockUser(roles = "CEO")
-    public void shouldDeleteManufacturer() throws Exception {
+    void shouldDeleteManufacturer() throws Exception {
         // Arrange
         doNothing().when(deleteManufacturerUseCase).deleteManufacturer(1);
 
@@ -144,7 +143,7 @@ public class ManufacturerControllerTest {
                 .andExpect(status().isNoContent());
     }
     @Test
-    public void shouldReturnForbiddenWhenUnauthorized() throws Exception {
+    void shouldReturnForbiddenWhenUnauthorized() throws Exception {
         // Act & Assert
         mockMvc.perform(get("/manufacturers")
                         .contentType(MediaType.APPLICATION_JSON))

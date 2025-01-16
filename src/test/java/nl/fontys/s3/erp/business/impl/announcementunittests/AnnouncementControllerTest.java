@@ -24,7 +24,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @WithMockUser(roles = {"CEO", "MANAGER"})
-public class AnnouncementControllerTest {
+class AnnouncementControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -37,8 +37,7 @@ public class AnnouncementControllerTest {
     private GetAllAnnouncementsUseCase getAllAnnouncementsUseCase;
 
     @Test
-    //put withmockUser on every test
-    public void shouldReturnAllAnnouncements() throws Exception {
+    void shouldReturnAllAnnouncements() throws Exception {
         GetAnnouncementsResponse response = new GetAnnouncementsResponse(
                 Collections.singletonList(new Announcement(1L, "Title", "Content", null, null, null, null, AnnouncementType.DEPARTMENTAL, true))
         );
@@ -51,23 +50,8 @@ public class AnnouncementControllerTest {
                 .andExpect(jsonPath("$.announcements[0].title").value("Title"))
                 .andExpect(jsonPath("$.announcements[0].content").value("Content"));
     }
-//    @Test
-//    //either use repositoers use real data ORRRRR mock  businesslayer
-//    //check alternatives
-//    public void shouldCreateAnnouncement() throws Exception {
-//
-//        CreateAnnouncementRequest request = new CreateAnnouncementRequest("Title", "Content", null, null, null, null, AnnouncementType.DEPARTMENTAL, true);
-//        CreateAnnouncementResponse response = new CreateAnnouncementResponse(1L);
-//        when(createAnnouncementUseCase.createAnnouncement(any(CreateAnnouncementRequest.class))).thenReturn(response);
-//
-//        mockMvc.perform(post("/announcements")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{ \"title\": \"New Title\", \"content\": \"New Content\" }"))
-//                .andExpect(status().isCreated())
-//                .andExpect(jsonPath("$.id").value(1));
-//    }
     @Test
-    public void shouldDeleteAnnouncement() throws Exception {
+    void shouldDeleteAnnouncement() throws Exception {
         // Arrange
         doNothing().when(deleteAnnouncementUseCase).deleteAnnouncement(1);
 
@@ -77,7 +61,7 @@ public class AnnouncementControllerTest {
                 .andExpect(status().isNoContent());
     }
     @Test
-    public void shouldReturnSingleAnnouncement() throws Exception {
+    void shouldReturnSingleAnnouncement() throws Exception {
         // Arrange
         Announcement announcement = new Announcement(1L,"Title", "Content", null, null, null, null, AnnouncementType.DEPARTMENTAL, true);
         when(getAnnouncementUseCase.getAnnouncement(1L)).thenReturn(announcement);
@@ -90,15 +74,4 @@ public class AnnouncementControllerTest {
                 .andExpect(jsonPath("$.title").value("Title"))
                 .andExpect(jsonPath("$.content").value("Content"));
     }
-//    @Test
-//    public void shouldUpdateAnnouncement() throws Exception {
-//        // Arrange
-//        doNothing().when(updateAnnouncementUseCase).updateAnnouncement(any(UpdateAnnouncementRequest.class));
-//
-//        // Act & Assert
-//        mockMvc.perform(put("/announcements/1")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content("{ \"title\": \"Updated Title\", \"content\": \"Updated Content\" }"))
-//                .andExpect(status().isNoContent());
-//    }
 }
