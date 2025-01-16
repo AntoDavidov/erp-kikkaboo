@@ -1,40 +1,23 @@
 package nl.fontys.s3.erp.business.dtos.userdto;
 
-import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
-import nl.fontys.s3.erp.domain.users.Role;
+import lombok.*;
 
 
 @Getter
 @Setter
 @Builder
 @AllArgsConstructor
+@NoArgsConstructor
 public class UpdateUserRequest {
-    private long userId;
-    @NotBlank
-    private String firstName;
+    private long id;
 
-    @NotBlank
-    private String lastName;
-
-    @NotBlank
-    private String address;
-
-    @Email
     @NotBlank
     private String email;
 
     @NotBlank
-    private String password;
+    private String oldPassword;
 
     @NotBlank
-    private String phone;
-
-    @NotNull
-    private Role role;
+    private String newPassword;
 }
