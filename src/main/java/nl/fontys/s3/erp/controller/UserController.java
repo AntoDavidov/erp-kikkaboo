@@ -19,6 +19,9 @@ public class UserController {
     private final GetUserUseCase getUserUseCase;
     private final GetAllUsersUseCase getAllUsersUseCase;
     private final DeleteUserUseCase deleteUserUseCase;
+    private final UpdateUserUseCase updateUserUseCase;
+    private final GetUserByEmployeeIdUseCase getUserByEmployeeIdUseCase;
+
 
     @GetMapping()
     @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
@@ -50,5 +53,28 @@ public class UserController {
         }
 
         return ResponseEntity.ok().body(user);
+    }
+    @PutMapping("{id}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
+    public ResponseEntity<Void> updateUser(
+            @PathVariable long id,
+            @RequestBody @Valid UpdateUserRequest request
+    ) {
+        if (id != request.getId()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        }
+
+        updateUserUseCase.updateUser(request);
+        return ResponseEntity.noContent().build();
+    }
+    @GetMapping("/by-employee/{employeeId}")
+    @PreAuthorize("hasRole('CEO') or hasRole('MANAGER') or hasRole('SPECIALIST')")
+    public ResponseEntity<User> getUserByEmployeeId(@PathVariable long employeeId) {
+        try {
+            User user = getUserByEmployeeIdUseCase.getUserByEmployeeId(employeeId);
+            return ResponseEntity.ok(user);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }

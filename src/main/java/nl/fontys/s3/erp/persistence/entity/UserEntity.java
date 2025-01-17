@@ -36,11 +36,11 @@ public class UserEntity {
     private String password;
 
 
-    @ManyToOne(optional = false, cascade = CascadeType.ALL)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
     private UserRoleEntity role;
 
-    @OneToOne(optional = true, cascade = CascadeType.ALL)
-    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id", nullable = true)
+    @OneToOne
+    @JoinColumn(name = "employee_id", referencedColumnName = "employee_id")
     private EmployeeEntity employee;
 }
