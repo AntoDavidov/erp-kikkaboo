@@ -38,41 +38,27 @@ class UpdateUserUseCaseImplTest {
     private UpdateUserUseCaseImpl updateUserUseCase;
 
     @Test
-    void updateUser_successfulUpdate() {
+    void updateUser_successfulEmailUpdateOnly() {
         // Arrange
         UserRoleEntity roleEntity = UserRoleEntity.builder()
                 .role(Role.CEO)
                 .build();
 
-        // Mock EmployeeEntity
-        EmployeeEntity employeeEntity = EmployeeEntity.builder()
-                .id(8L) // Matches accessToken.getEmployeeId()
-                .employeeCode("EMP001")
-                .build();
-
-        // Mock UserEntity
         UserEntity existingUserEntity = UserEntity.builder()
                 .id(8L)
                 .email("old.email@example.com")
                 .password("hashedPassword123")
                 .role(roleEntity)
-                .employee(employeeEntity)
+                .employee(EmployeeEntity.builder()
+                        .id(8L)
+                        .employeeCode("EMP001")
+                        .build())
                 .build();
 
-        // Create UpdateUserRequest
-        UpdateUserRequest request = new UpdateUserRequest(
-                8L, // User ID
-                "new.email@example.com",
-                "currentPassword123",
-                "newPassword123"
-        );
+        UpdateUserRequest request = new UpdateUserRequest(8L, "new.email@example.com", null, null);
 
-        // Mock behaviors
         when(accessToken.getEmployeeId()).thenReturn(8L);
         when(userRepository.findByEmployeeId(8L)).thenReturn(Optional.of(existingUserEntity));
-        when(userRepository.findById(8L)).thenReturn(Optional.of(existingUserEntity));
-        when(passwordEncoder.matches("currentPassword123", "hashedPassword123")).thenReturn(true);
-        when(passwordEncoder.encode("newPassword123")).thenReturn("newHashedPassword123");
 
         // Act
         updateUserUseCase.updateUser(request);
@@ -80,9 +66,101 @@ class UpdateUserUseCaseImplTest {
         // Assert
         verify(userRepository).save(argThat(user ->
                 user.getEmail().equals("new.email@example.com") &&
-                        user.getPassword().equals("newHashedPassword123")
+                        user.getPassword().equals("hashedPassword123") // Password remains unchanged
         ));
     }
+
+    @Test
+    void updateUser_successfulEmailAndPasswordUpdate() {
+        // Arrange
+        UserRoleEntity roleEntity = UserRoleEntity.builder()
+                .role(Role.CEO)
+                .build();
+
+        UserEntity existingUserEntity = UserEntity.builder()
+                .id(8L)
+                .email("old.email@example.com")
+                .password("hashedPassword123")
+                .role(roleEntity)
+                .employee(EmployeeEntity.builder()
+                        .id(1L)
+                        .employeeCode("EMP001")
+                        .build())
+                .build();
+
+        UpdateUserRequest request = new UpdateUserRequest(8L, "new.email@example.com", "currentPassword123", "newPassword123");
+
+        when(accessToken.getEmployeeId()).thenReturn(1L); // Employee ID matches
+        when(userRepository.findByEmployeeId(1L)).thenReturn(Optional.of(existingUserEntity)); // Fetch by employeeId
+        when(passwordEncoder.matches("currentPassword123", "hashedPassword123")).thenReturn(true); // Old password check
+        when(passwordEncoder.encode("newPassword123")).thenReturn("newHashedPassword123"); // Encode new password
+
+        // Act
+        updateUserUseCase.updateUser(request);
+
+        // Assert
+        verify(userRepository).save(argThat(user ->
+                user.getEmail().equals("new.email@example.com") &&
+                        user.getPassword().equals("newHashedPassword123") // Password updated
+        ));
+    }
+    @Test
+    void updateUser_noOldPasswordProvided_throwsException() {
+        // Arrange
+        UserRoleEntity roleEntity = UserRoleEntity.builder()
+                .role(Role.CEO)
+                .build();
+
+        UserEntity existingUserEntity = UserEntity.builder()
+                .id(8L)
+                .email("old.email@example.com")
+                .password("hashedPassword123")
+                .role(roleEntity)
+                .employee(EmployeeEntity.builder()
+                        .id(1L)
+                        .employeeCode("EMP001")
+                        .build())
+                .build();
+
+        UpdateUserRequest request = new UpdateUserRequest(8L, "new.email@example.com", null, "newPassword123");
+
+        when(accessToken.getEmployeeId()).thenReturn(1L); // Employee ID matches
+        when(userRepository.findByEmployeeId(1L)).thenReturn(Optional.of(existingUserEntity)); // Fetch by employeeId
+
+        // Act & Assert
+        assertThrows(SecurityException.class, () -> updateUserUseCase.updateUser(request));
+
+        verify(userRepository, never()).save(any());
+    }
+
+    @Test
+    void updateUser_noNewPasswordProvided_throwsException() {
+        // Arrange
+        UserRoleEntity roleEntity = UserRoleEntity.builder()
+                .role(Role.CEO)
+                .build();
+
+        UserEntity existingUserEntity = UserEntity.builder()
+                .id(8L)
+                .email("old.email@example.com")
+                .password("hashedPassword123")
+                .role(roleEntity)
+                .employee(EmployeeEntity.builder()
+                        .id(1L)
+                        .employeeCode("EMP001")
+                        .build())
+                .build();
+
+        UpdateUserRequest request = new UpdateUserRequest(8L, "new.email@example.com", "currentPassword123", null);
+
+        when(accessToken.getEmployeeId()).thenReturn(1L); // Employee ID matches
+        when(userRepository.findByEmployeeId(1L)).thenReturn(Optional.of(existingUserEntity)); // Fetch by employeeId
+
+        // Act & Assert
+        assertThrows(SecurityException.class, () -> updateUserUseCase.updateUser(request));
+        verify(userRepository, never()).save(any());
+    }
+
 
     @Test
     void updateUser_invalidOldPassword_throwsException() {

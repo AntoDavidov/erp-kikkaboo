@@ -26,16 +26,31 @@ public class UpdateUserUseCaseImpl implements UpdateUserUseCase {
             throw new AccessDeniedException("You cannot change another user's information.");
         }
 
-        if (!passwordEncoder.matches(request.getOldPassword(), currentUser.getPassword())) {
-            throw new SecurityException("Old password is incorrect.");
+        // Check if old password is provided without new password
+        if ((request.getOldPassword() != null && !request.getOldPassword().isBlank()) &&
+                (request.getNewPassword() == null || request.getNewPassword().isBlank())) {
+            throw new SecurityException("New password must be provided when old password is specified.");
         }
 
-        UserEntity userToUpdate = userRepository.findById(request.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found."));
+        // Check if new password is provided without old password
+        if ((request.getNewPassword() != null && !request.getNewPassword().isBlank()) &&
+                (request.getOldPassword() == null || request.getOldPassword().isBlank())) {
+            throw new SecurityException("Old password must be provided when new password is specified.");
+        }
 
-        userToUpdate.setEmail(request.getEmail());
-        userToUpdate.setPassword(passwordEncoder.encode(request.getNewPassword()));
+        if (request.getOldPassword() != null && !request.getOldPassword().isBlank()) {
+            if (!passwordEncoder.matches(request.getOldPassword(), currentUser.getPassword())) {
+                throw new SecurityException("Old password is incorrect.");
+            }
 
-        userRepository.save(userToUpdate);
+            if (request.getNewPassword() != null && !request.getNewPassword().isBlank()) {
+                currentUser.setPassword(passwordEncoder.encode(request.getNewPassword()));
+            }
+        }
+
+        currentUser.setEmail(request.getEmail());
+
+        userRepository.save(currentUser);
     }
+
 }

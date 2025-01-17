@@ -15,9 +15,7 @@ public class UpdateUserRequest {
     @NotBlank
     private String email;
 
-    @NotBlank
     private String oldPassword;
 
-    @NotBlank
     private String newPassword;
 }
